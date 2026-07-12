@@ -1,20 +1,17 @@
 # TowkAI OS pitch
 
-## 30-second pitch
+## One-liner
 
-TowkAI OS is a gamified pixel-art IDE for supervising an AI workforce. As founders use more agents, work becomes fragmented and invisible. TowkAI gives one visual control room to see what every agent is doing across projects, track progress and updates, and intervene when something is blocked or ready for approval. The pixel world makes parallel agent work understandable at a glance, while founder controls, alerts and review queues keep the human in charge.
+TowkAI OS is a gamified pixel-art IDE for running an AI-powered One-Person Company—see what every agent is doing, inspect its real work, and take control from one screen.
 
-## 60-second demo
+## Name explanation
 
-This is TowkAI OS. Every pixel worker represents one AI agent. The left panel shows all projects and agents with live status. In the centre, agents move between research, build, design, outreach, founder review and ops rooms depending on what they are actually doing.
+“TowkAI” plays on **towkay**, meaning **boss in Hokkien**. In an AI-powered OPC, the founder is the towkay supervising a digital workforce.
 
-I can start Live Mode and watch progress, updates, blockers and completed outputs appear in real time. When I click an agent, the inspector shows its exact task, project, progress, priority, ETA, output and recent updates. I can pause it, reprioritise it, edit its task, send it to review or approve it.
+## 45-second demo
 
-Anything blocked or waiting for a decision appears in Founder Attention. Resolving work earns XP and completes quests, turning the operational habit of supervising agents into something intuitive and engaging.
+TowkAI OS is the control room above your AI agents. On the left, I see projects and every agent’s live status. In the centre, pixel workers move according to whether they are researching, building, designing, doing outreach or waiting for my review.
 
-TowkAI is not another chatbot. It is the command centre for a one-person company powered by many AI agents.
+When I click an agent, its inspector opens with five views: objective, execution plan, live activity, real artifacts and founder controls. I can preview an output, request revision or approve it. Blocked and review-ready agents automatically appear in Founder Attention.
 
-
-## Judge self-serve instruction
-
-Click **Quick Tour** for a step-by-step explanation, or click **Guided Demo** to watch the complete product loop automatically.
+This is not only simulated: I can connect a public GitHub repository and load real commits and repository activity into the Builder agent. TowkAI makes an AI workforce visible and controllable, so one founder can confidently run an OPC.

@@ -1,69 +1,72 @@
 # TowkAI OS 頭家
 
-**A live, gamified pixel-art AI agent IDE for seeing what every agent is doing, tracking progress, and taking control from one place.**
+**TowkAI** plays on **“towkay” — boss in Hokkien**.
 
-## Core product
+It is a gamified pixel-art AI agent IDE for **One-Person Companies (OPCs)**: one place to see what every AI agent is doing, track progress and updates, inspect real outputs, and intervene when needed.
 
-TowkAI OS is the visibility and control layer above an AI workforce.
+## Core MVP loop
 
-It answers the questions a founder actually has:
+**Observe → inspect → understand → intervene → approve**
 
-- Which agents are running?
-- What is each agent working on?
-- Which project does it belong to?
-- What changed recently?
-- Which agents are blocked?
-- What needs founder approval?
-- Where should the founder intervene?
+- **Observe:** see every project and agent status from one screen
+- **Inspect:** open an agent to view its objective, plan, current step, activity and artifacts
+- **Understand:** see progress, priority, ETA, blockers and recent updates
+- **Intervene:** pause, resume, reprioritise, change the task, unblock or send to review
+- **Approve:** preview a real artifact, approve it or request revision
 
-## MVP loop
+## Submission-ready features
 
-1. **See** all projects and agents in one dashboard
-2. **Watch** pixel agents move according to real activity state
-3. **Inspect** task, progress, output, ETA and recent updates
-4. **Control** agents by pausing, reprioritising, redirecting, blocking or approving
-5. **Resolve** exceptions in Founder Attention
-6. **Earn XP** and complete quests while operating the company
+### First-time clarity
+- automatic quick tour
+- guided end-to-end demo
+- “MVP in 10 seconds” explanation
+- map legend and next-best-action card
+- explicit “click to inspect” labels
 
-## Interactive features
+### Functional agent IDE
+- responsive Agent Inspector drawer
+- Overview, Plan, Activity, Artifacts and Controls tabs
+- detailed task plans and current-step highlighting
+- real artifact previews, copy, approval and revision flow
+- project filtering that changes the active workspace
+- visible Founder Attention queue for blockers and approvals
 
-- real-time autonomous progress simulation
-- activity-driven pixel movement
-- blocked and review-ready alerts
-- founder controls and task editing
-- agent priority controls
-- project progress bars
-- live activity feed
-- speed controls: 0.5×, 1× and 2×
-- random task assignment
-- XP, levels, achievements and quests
-- celebratory particles and completion effects
-- keyboard shortcuts
-- Hawker, Trading Floor and Gardens scene skins
-- first-run guided tour
+### Real data connector
+- connect any public GitHub repository
+- load real repository metadata and recent commits
+- inject live repository activity into the Builder agent
+- preview the connected repository as an artifact
 
-## Why the game layer matters
-
-The pixel world is not just decoration. It turns invisible parallel AI work into something understandable at a glance. Status, movement, rooms, alerts and review queues help a solo founder develop situational awareness without reading every agent log.
+### Gamified pixel world
+- agents move according to real status
+- task parcel moves to the selected agent
+- animated monitors and support bot
+- Hawker Centre, Trading Floor and Gardens by the Bay skins
+- XP, quests, achievements and approval effects
 
 ## Demo flow
 
-1. Open the app and use the Quick Tour
-2. Click **Start Live Mode**
-3. Watch agents update progress and move between rooms
-4. Click an agent and show the inspector
-5. Change priority or edit its task
-6. Resolve a blocked or review-ready item
-7. Show XP, quest completion and achievement feedback
-8. Switch scene skins
+1. Open the app and run the Guided Demo.
+2. Click an agent or `OPEN DETAILS`.
+3. Open the **Plan**, **Activity** and **Artifacts** tabs.
+4. Preview an artifact and request revision or approve it.
+5. Resolve a blocked agent from Founder Attention.
+6. Connect `defipaca/towkAI` through the public GitHub connector.
+7. Show the Builder agent populated with real commit activity.
 
-## Production path
+## Architecture
 
-- connect real agent runtimes and APIs
-- stream live status, progress, logs and output events
-- persist project memory and task history
-- integrate tools such as Claude Code, Cursor, OpenAI, n8n, CRM and project-management systems
-- add permissions, budgets, cost tracking and reliability monitoring
+Hackathon MVP:
+- static HTML, CSS and JavaScript
+- no build step
+- deterministic agent simulation for reliable judging
+- public GitHub API integration for real repository activity
+
+Production path:
+- connect Codex, Claude Code, research agents and workflow platforms
+- ingest live agent events through adapters/webhooks
+- persist memory, artifacts and approvals
+- add permissions, cost controls and team governance
 
 ## Built for
 
