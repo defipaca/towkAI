@@ -1,99 +1,100 @@
 # TowkAI OS 頭家
 
-**A pixel-art MVP for seeing, controlling and coordinating AI agents across projects.**
+**A pixel-art MVP for seeing what your AI agents are doing, tracking their progress, and controlling them from one place.**
 
-TowkAI OS is designed to be understood quickly by a judge or founder:
+## What this product is
 
-- the **left sidebar** explains what the product is and lists active projects
-- the **center map** shows where agents are working
-- the **right inspector** shows what a selected agent is doing and how to control it
-- the **bottom review queue** is where the founder approves or sends back outputs
+TowkAI OS is a **gamified AI agent IDE**.
 
-In short: **one founder, many projects, many agents, one control screen.**
+Its core job is simple:
 
-## What the MVP is for
+> Help a founder see all active AI agents across projects, understand what each one is doing, and step in when needed.
 
-TowkAI OS is a command centre for a one-person company. It helps a solo founder:
+Instead of jumping between chats, automation tools and dashboards, the founder gets one control room.
 
-1. switch between projects
-2. dispatch missions to specialist AI agents
-3. watch work happen across functional zones
-4. inspect each agent's task and status
-5. approve or reject outputs before anything ships
+## What the MVP demonstrates
 
-## MVP features
+This MVP is designed to be understandable in seconds.
 
-- **Multi-project workspace:** Flywheel, Dealmaiker, Rocketo and IgnAIte are example projects.
-- **Agent process list:** specialist agents appear as live worker processes.
-- **Pixel-art control map:** agents visibly move between research, build, growth, ops and founder review zones.
-- **Founder controls:** pause, stop, reassign, approve and update an agent's task.
-- **Mission orchestration:** a single business goal is decomposed across multiple agents.
-- **Approval queue:** outputs wait for a founder to CHOP or SEND BACK.
-- **Event console:** a live stream shows what the system is doing.
-- **Scene skins:** users can switch the background between **Hawker Centre**, **Trading Floor**, and **Gardens by the Bay** to reflect different Singapore operating vibes.
+### Core MVP promise
+- **See all agents in one place**
+- **Track live status and progress**
+- **Read recent updates from each agent**
+- **Know what needs your attention**
+- **Pause, redirect, unblock or approve work**
 
-## Why it is easy to understand
+### How the interface works
+- **Left sidebar:** what the product is, projects, and AI agent roster
+- **Center map:** pixel-art operations world where agents move based on current activity
+- **Right inspector:** selected agent’s task, progress, output, and recent updates
+- **Bottom feed:** recent system and agent activity
+- **Founder Attention panel:** blocked or approval-waiting work
 
-This MVP deliberately includes:
+## First-time user clarity features
 
-- a **"What this app does"** panel
-- a **"MVP in 10 seconds"** explainer card
-- a **"How to read this"** legend on the map
-- a visible **current project** card
-- a visible **current mission** card
+To make the MVP easy for judges and first-time users, it includes:
 
-These reduce ambiguity so a judge can immediately understand what the product is doing.
+- a **“What you are building”** starter panel
+- a **Welcome / Quick Tour popup** on first load
+- a **“MVP in 10 seconds”** explainer card
+- a **“How to read this”** legend on the map
+- visible status labels for every agent
 
-## Demo usage
+## Agent behaviors in the demo
 
-Open `index.html` locally or deploy the repository directly to Vercel, Netlify, GitHub Pages or Cloudflare Pages. No build step and no API key are required.
+The pixel agents are not random decoration.
 
-Recommended demo flow:
+They move based on agent state:
 
-1. explain the product in one sentence: “This is an operating system for a one-person company.”
-2. click a different project in the sidebar
-3. switch scene skins to show Hawker / Trading Floor / Gardens
-4. click **RUN DEMO**
-5. click an agent to inspect it
-6. CHOP or SEND BACK an output in the approval queue
+- **Running** → move to the relevant work room
+- **Needs Review** → move to Founder Review
+- **Blocked** → stay at review with a blocker bubble
+- **Done** → move to Ops / Memory
+- **Idle** → move out of the active workflow
 
-## Why it matters
+## Scene skins
 
-The bottleneck for a one-person company is not just access to AI. It is **control, visibility and trust**.
+The same operating system can be viewed with different Singapore-flavoured skins:
 
-Today, founders use scattered chats, automations and tools. TowkAI OS gives them one visual control plane for projects, agents, work status and approvals.
+- **Hawker Centre**
+- **Trading Floor**
+- **Gardens by the Bay**
+
+These are aesthetic skins over the same operational model.
+
+## Demo flow
+
+1. Open the app
+2. Let the quick-tour popup explain the concept
+3. Click **Run Live Demo**
+4. Click different agents in the roster or map
+5. Show how the right inspector explains exactly what each agent is doing
+6. Resolve items in **Founder Attention**
 
 ## Architecture
 
 Hackathon MVP:
 
 - static HTML, CSS and JavaScript
-- no dependencies
-- responsive single-page app
-- deterministic simulation for reliable judging
+- zero dependencies
+- no API key required
+- deterministic simulated updates for reliable demos
 
-Production path:
+Production direction:
 
 - connect real agent runtimes and APIs
-- persist project memory and task history
-- support real approvals and handoffs
-- add cost controls and observability
-- allow installable third-party agent modules
+- ingest real status, progress and agent logs
+- persist task history and agent memory
+- support messaging and approvals between founder and agents
+- add multi-user and permission controls
 
-## Business model
+## Why it matters
 
-1. SaaS subscriptions by projects, active agents and monthly executions
-2. usage-based pricing for orchestration and model calls
-3. marketplace revenue share from third-party agents and skills
-4. premium first-party GTM, research, BD and ops modules
-5. white-label control planes for agencies and micro-teams
+The main bottleneck for AI-powered one-person companies is not just access to agents.
+It is **visibility, confidence and control**.
+
+TowkAI OS solves that by making the invisible visible.
 
 ## Built for
 
 BUIDL_OPC_SG_0712 — Singapore, July 12, 2026.
-
-## Pitch and submission assets
-
-- `SUBMISSION.md` — paste-ready OpenArena submission copy
-- `PITCH.md` — 30-second and 60-second pitch scripts, demo flow and judge Q&A
-- `SCREENSHOT_GUIDE.md` — exact screenshots, captions and recording sequence

@@ -9,80 +9,42 @@ defipaca@gmail.com
 ## Project Name
 TowkAI OS
 
-## Official Website / Demo
-[ADD VERCEL URL]
-
-## GitHub Repo
-https://github.com/defipaca/towkAI
-
 ## Project Introduction
-TowkAI OS is a pixel-art control centre for one-person companies. It lets one founder manage multiple AI agents across multiple active projects from a single screen.
-
-Projects appear as workspaces. Agents appear as visible worker processes. The map shows where work is happening across research, product, growth, operations and founder review. The founder can inspect any agent, edit its task, pause or stop it, reassign it, and approve or reject its output before anything ships.
-
-The MVP is designed to be understood in seconds: choose a project, dispatch a mission, watch agents move through work zones, and review their outputs in the approval queue. Singapore-themed skins — Hawker Centre, Trading Floor and Gardens by the Bay — make the system memorable while preserving the same operating model.
-
-## Project Logo URL
-[ADD VERCEL URL]/logo.svg
-
-## Official Twitter / X
-https://x.com/defipaca
-
-## Official Discord
-Leave blank
-
-## Official Telegram
-Leave blank
+TowkAI OS is a gamified pixel-art AI agent IDE. It gives a founder one visual control room to see what all their AI agents are doing across projects, track progress, read recent updates, and take control when needed. On the left, the founder sees active projects and agent roster. In the centre, pixel agents move to different work zones depending on whether they are researching, building, designing, doing outreach, waiting for founder review, or completing ops tasks. On the right, the founder can inspect an agent’s task, progress, output and recent updates, then pause, redirect, unblock or approve it. At the bottom, a live feed shows what changed recently, while Founder Attention surfaces anything blocked or waiting for approval. The MVP is intentionally easy to understand for first-time users: it includes a welcome popup, a “What you are building” panel, a “MVP in 10 seconds” explainer card, and a legend showing how to read the map.
 
 ## Primary Contact Person, Email, Position
 Yun Han Wong, defipaca@gmail.com, Founder / Builder
 
-## Secondary Contact Person, Email, Position
-Leave blank
-
 ## Core Team Members' Background
-Solo founder with 9+ years across Web3, fintech, ecosystem growth, partnerships and 0→1 product building.
-
-I founded The Block School, a Web3 strategy and education consultancy that generated over $1M in revenue, trained more than 5,000 learners and delivered 300+ accredited classes. I have also built products and workflows including Rocketo, Flywheel, Dealmaiker, IgnAIte, an FHE privacy wallet, RWA/private-credit systems and DeFi automation tools.
-
-At GoMining, I led Web3 and APAC business development, built a 300+ partner pipeline and generated over $500K in qualified opportunities. TowkAI OS combines my experience operating as a solo founder with the real GTM, research, BD and operations workflows I already use.
+Solo founder with 9+ years across Web3, fintech, ecosystem growth, partnerships and 0→1 product building. I founded The Block School, a Web3 strategy and education consultancy that generated over $1M in revenue, trained more than 5,000 learners and delivered 300+ accredited classes. I have built or co-built products including Rocketo, Flywheel, Dealmaiker, IgnAIte, an FHE privacy wallet, RWA/private-credit workflows and DeFi automation tools. At GoMining I led Web3 and APAC BD, built a 300+ partner pipeline and generated over $500K in qualified opportunities. TowkAI OS combines my experience operating as a solo founder with a product vision for making AI work more visible, operable and understandable.
 
 ## Project Innovation (Related to AI)
-1. **One-screen control plane:** one founder can supervise many agents across many projects without switching between disconnected tools.
-2. **Visual orchestration:** moving pixel agents, work zones, queues and status changes make invisible AI work understandable at a glance.
-3. **Inspectable agent processes:** every agent has a visible task, status, project context and progress state.
-4. **Human approval by default:** outputs wait in a founder review queue and cannot be considered shipped until approved.
-5. **Direct founder controls:** agents can be paused, stopped, reassigned, re-tasked and approved from the same interface.
-6. **Composable product path:** existing examples map to real workflows from Flywheel, Dealmaiker, Rocketo and IgnAIte, with a future marketplace for installable agents and skills.
+1. **AI agent visibility as the core product:** TowkAI is built around seeing what all agents are doing, rather than only prompting them.
+2. **Gamified agent IDE:** projects, agents, statuses, recent updates, and approvals are presented as a playful but functional operating system.
+3. **Spatial activity model:** agent movement reflects what kind of work is happening and where founder attention is needed.
+4. **Human-in-the-loop control:** the founder can pause, redirect, unblock or approve an agent directly from the inspector.
+5. **Exception-first supervision:** blocked work and approval-ready outputs are surfaced in a dedicated Founder Attention queue.
+6. **Legibility by design:** the MVP includes built-in onboarding and map explanation so even first-time users can understand the product quickly.
 
 ## Pain Point Solved
-The bottleneck for a one-person company is not access to AI models. It is control and visibility.
-
-Founders currently manage agent work across separate chats, automations, dashboards and project tools. They often cannot see which agents are active, what each agent is doing, which project context it belongs to, what is blocked, or what has already been approved.
-
-TowkAI OS gives one visual operating system for projects, agents, missions, outputs and founder decisions. This allows one person to supervise a larger AI workforce without losing trust or control.
+As founders use more AI agents, work becomes fragmented across chats, automations, dashboards and model interfaces. They often cannot easily answer basic questions: Which agents are running? What is each agent doing? What changed recently? What is blocked? What needs my approval? TowkAI OS solves this by giving one screen for agent visibility, status, progress, updates and founder control.
 
 ## Current Development Progress
-A working responsive MVP was built for BUIDL_OPC_SG_0712.
-
-The current version includes:
-- a clear product explainer and onboarding flow
-- a multi-project sidebar
-- a live agent process list
-- a pixel-art operations map
-- animated agents moving between work zones
-- Hawker Centre, Trading Floor and Gardens by the Bay scene skins
-- an agent inspector with editable tasks
-- pause, stop, reassign and approve controls
-- a mission dispatch workflow
-- a founder approval queue
-- a live event console
-
-The MVP is a zero-build static application with no API key required, making it reliable for live judging. Next milestones are connecting real model and workflow APIs, persisting project and agent memory, adding scheduling and retries, tracking cost and performance, and enabling installable third-party agent modules.
+A working responsive MVP was built for BUIDL_OPC_SG_0712. It includes a first-run welcome popup, product explainer panel, project list, agent roster, pixel-art operations map, agent movement based on status, three switchable Singapore-themed skins, detailed agent inspector, live activity feed, Founder Attention queue, and founder controls for pause, review, blocking, approval and task updates. The MVP runs as a zero-build static app with deterministic simulated agent updates, making it reliable and easy to demo. Next milestones are connecting real agent runtimes, ingesting live status and logs, persisting task history and memory, and supporting real-time messaging between founder and agents.
 
 ## Expected Revenue Sources
-1. SaaS subscriptions for solo founders and micro-teams, priced by projects, active agents and monthly executions.
-2. Usage-based fees for orchestration, model calls and workflow runs.
-3. Marketplace revenue share from third-party agents, skills and workflow packs.
-4. Premium first-party GTM, BD, research and operations modules.
-5. White-label licensing for agencies, venture studios and micro-teams that need a visual AI agent control plane.
+1. SaaS subscriptions for founders and small teams based on projects, agent seats and workflow volume.
+2. Usage-based fees for orchestration, model calls and workflow execution.
+3. Premium integrations with AI tools, CRMs and task systems.
+4. White-label control rooms for agencies, studios and AI-native teams.
+5. Marketplace revenue from installable agent modules and workflow packs.
+
+## Official X
+https://x.com/defipaca
+
+## GitHub Repo
+https://github.com/defipaca/towkAI
+
+## Links to fill after deployment
+Official Website / Demo: [ADD DEPLOYED URL]
+Project Logo URL: [ADD PUBLIC URL TO logo.svg]
