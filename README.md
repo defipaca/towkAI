@@ -16,7 +16,7 @@ It answers the questions a founder actually has:
 - What needs founder approval?
 - Where should the founder intervene?
 
-## Winning MVP loop
+## MVP loop
 
 1. **See** all projects and agents in one dashboard
 2. **Watch** pixel agents move according to real activity state
