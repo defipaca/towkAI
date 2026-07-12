@@ -24,6 +24,9 @@ button,input,textarea,select{font:inherit}.pixel{font-family:"Press Start 2P",mo
 .console{background:#08101d;border-top:3px solid #000;min-height:0;display:grid;grid-template-columns:1fr 430px}.terminal{display:flex;flex-direction:column;min-width:0}.terminal-head,.review-head{height:36px;display:flex;align-items:center;justify-content:space-between;background:#0f1929;border-bottom:2px solid #000;padding:0 10px;font-size:9px;color:var(--yellow)}.logs{overflow:auto;padding:8px 12px;font-size:9px;line-height:1.72}.log-time{color:#64748b}.log-agent{color:var(--mint)}.log-warn{color:var(--yellow)}.review{border-left:3px solid #000;min-width:0}.review-list{padding:8px;overflow:auto;height:177px}.review-card{background:#1b293d;border:2px solid #000;padding:9px;margin-bottom:8px;font-size:9px}.review-card b{color:var(--yellow)}.review-actions{display:flex;gap:6px;margin-top:8px}.review-actions button{padding:5px 7px}
 .modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;z-index:30}.modal.show{display:flex}.modal-box{width:min(760px,calc(100% - 28px));background:#1d2b42;border:4px solid #000;box-shadow:10px 10px 0 #000;padding:18px}.modal-box h2{font-size:14px;margin:0 0 12px}.modal-box p{font-size:10px;line-height:1.6;color:#cbd5e1}.tour-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.tour-card{background:#0f1929;border:2px solid #000;padding:10px}.tour-card h4{margin:0 0 6px;font-size:9px;color:var(--yellow)}.tour-card p{margin:0;font-size:9px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.toast{position:fixed;right:18px;top:72px;background:var(--yellow);color:#111;border:3px solid #000;box-shadow:5px 5px 0 #000;padding:10px 12px;font-size:9px;display:none;z-index:40}.toast.show{display:block}.achievement{position:fixed;left:50%;top:78px;transform:translateX(-50%);background:#facc15;color:#111;border:4px solid #000;box-shadow:7px 7px 0 #000;padding:12px 18px;font-size:9px;display:none;z-index:45}.achievement.show{display:block;animation:drop .3s steps(3)}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}@keyframes spark{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx),var(--dy))}}@keyframes coin{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-55px)}}@keyframes drop{0%{transform:translate(-50%,-30px)}100%{transform:translate(-50%,0)}}
+
+.tour-highlight{position:relative;z-index:36!important;outline:5px solid var(--yellow)!important;outline-offset:5px;box-shadow:0 0 0 9999px #0009,0 0 24px var(--yellow)!important;animation:tourPulse 1s steps(2) infinite}.tour-step-note{background:#0f1929;border:2px solid #000;padding:10px;margin-top:10px;font-size:9px;line-height:1.55}.guided-banner{position:fixed;left:50%;bottom:238px;transform:translateX(-50%);z-index:50;background:var(--yellow);color:#111;border:4px solid #000;box-shadow:7px 7px 0 #000;padding:12px 16px;font-size:9px;max-width:620px;text-align:center;display:none}.guided-banner.show{display:block}.guided-banner b{font-family:"Press Start 2P",monospace;font-size:8px}.guided-banner .sub{margin-top:6px;font-size:9px}.tour-progress{height:10px;background:#09111f;border:2px solid #000;margin:10px 0}.tour-progress i{display:block;height:100%;background:var(--mint)}
+@keyframes tourPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
 @media(max-width:1280px){.main{grid-template-columns:290px 1fr}.inspector{display:none}.context-grid{grid-template-columns:1fr}.console{grid-template-columns:1fr}.top-stats{display:none}}
 </style>
 </head>
@@ -36,13 +39,13 @@ button,input,textarea,select{font:inherit}.pixel{font-family:"Press Start 2P",mo
 </header>
 
 <main class="main">
-<aside class="sidebar">
+<aside class="sidebar" id="sidebarPanel">
   <div class="panel-title pixel">FIRST 30 SECONDS</div>
   <div class="padded">
     <div class="card">
       <h3 class="pixel">WHAT IS TOWKAI?</h3>
       <p>A gamified control room for AI agents. You see who is working, what changed, who is blocked, and what needs your approval.</p>
-      <div class="onboard-actions"><button class="btn btn-blue" onclick="showTour()">QUICK TOUR</button><button class="btn btn-yellow" onclick="startLiveMode()">START LIVE MODE</button></div>
+      <div class="onboard-actions"><button class="btn btn-blue" onclick="showTour()">QUICK TOUR</button><button class="btn btn-yellow" onclick="startGuidedDemo()">GUIDED DEMO</button></div>
       <div class="tiny" style="margin-top:9px">Keyboard: <b>Space</b> live mode · <b>1–3</b> scene · <b>A</b> approve selected</div>
     </div>
   </div>
@@ -51,14 +54,14 @@ button,input,textarea,select{font:inherit}.pixel{font-family:"Press Start 2P",mo
   <div class="panel-title pixel">DAILY QUESTS</div><div class="padded"><div class="quest-list" id="questList"></div></div>
 </aside>
 
-<section class="stage-wrap">
+<section class="stage-wrap" id="mapPanel">
   <div class="stage-toolbar">
     <button class="tab active">LIVE MAP</button><button class="tab">TASKS</button><button class="tab">FILES</button><button class="tab">MEMORY</button>
     <span style="font-size:8px;color:var(--muted);margin-left:5px">SCENE:</span>
     <button class="theme-chip active" onclick="setTheme('hawker',this)">HAWKER</button><button class="theme-chip" onclick="setTheme('trading',this)">TRADING</button><button class="theme-chip" onclick="setTheme('gardens',this)">GARDENS</button>
     <span style="font-size:8px;color:var(--muted);margin-left:5px">SPEED:</span>
     <button class="speed-chip" onclick="setSpeed(.6,this)">0.5×</button><button class="speed-chip active" onclick="setSpeed(1,this)">1×</button><button class="speed-chip" onclick="setSpeed(2,this)">2×</button>
-    <div class="toolbar-spacer"></div><button class="btn btn-purple" onclick="spawnTask()">+ RANDOM TASK</button><button class="btn btn-yellow" id="liveBtn" onclick="toggleLiveMode()">▶ LIVE MODE</button>
+    <div class="toolbar-spacer"></div><button class="btn btn-purple" onclick="spawnTask()">+ RANDOM TASK</button><button class="btn btn-yellow" id="liveBtn" onclick="toggleLiveMode()">▶ FREE LIVE MODE</button>
   </div>
   <div class="stage">
     <div class="context-grid">
@@ -81,17 +84,28 @@ button,input,textarea,select{font:inherit}.pixel{font-family:"Press Start 2P",mo
   </div>
 </section>
 
-<aside class="inspector"><div class="panel-title pixel">AGENT INSPECTOR</div><div class="inspector-body" id="inspector"></div></aside>
+<aside class="inspector" id="inspectorPanel"><div class="panel-title pixel">AGENT INSPECTOR</div><div class="inspector-body" id="inspector"></div></aside>
 </main>
 
-<section class="console">
+<section class="console" id="consolePanel">
   <div class="terminal"><div class="terminal-head pixel"><span>LIVE ACTIVITY FEED</span><span id="liveIndicator">PAUSED</span></div><div class="logs" id="logs"></div></div>
   <div class="review"><div class="review-head pixel"><span>FOUNDER ATTENTION</span><span id="reviewCount">2 ITEMS</span></div><div class="review-list" id="reviewList"></div></div>
 </section>
 </div>
 
-<div class="modal" id="tourModal"><div class="modal-box"><h2 class="pixel">WELCOME TO TOWKAI OS</h2><p>TowkAI is not another agent chatbot. It is the control layer above your AI workforce: one place to see what every agent is doing, follow progress and updates, and intervene when needed.</p><div class="tour-grid"><div class="tour-card"><h4 class="pixel">1. SEE</h4><p>Projects and agents are visible in the left sidebar with live status labels.</p></div><div class="tour-card"><h4 class="pixel">2. WATCH</h4><p>Pixel agents move between rooms according to their real activity state.</p></div><div class="tour-card"><h4 class="pixel">3. CONTROL</h4><p>Click an agent to pause, reprioritise, redirect, approve or block it.</p></div><div class="tour-card"><h4 class="pixel">4. PLAY</h4><p>Resolve alerts, complete quests and earn XP while running your one-person company.</p></div></div><div class="modal-actions"><button class="btn btn-blue" onclick="closeTour()">EXPLORE</button><button class="btn btn-yellow" onclick="closeTour();startLiveMode()">START LIVE DEMO</button></div></div></div>
-<div class="toast" id="toast"></div><div class="achievement" id="achievement"></div>
+<div class="modal" id="tourModal"><div class="modal-box" id="tourBox">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div><div class="tiny" id="tourStepLabel">STEP 1 OF 7</div><h2 class="pixel" id="tourTitle">WELCOME TO TOWKAI OS</h2></div>
+    <button class="btn btn-red" onclick="closeTour()">× CLOSE</button>
+  </div>
+  <p id="tourBody">TowkAI is the control layer above your AI workforce.</p>
+  <div class="tour-card" id="tourExample"><h4 class="pixel">WHAT TO NOTICE</h4><p id="tourNotice">Each part of the interface answers a specific founder question.</p></div>
+  <div class="modal-actions" style="justify-content:space-between">
+    <button class="btn btn-blue" id="tourPrev" onclick="prevTour()">← BACK</button>
+    <div style="display:flex;gap:8px"><button class="btn btn-purple" onclick="closeTour();startGuidedDemo()">RUN GUIDED DEMO</button><button class="btn btn-yellow" id="tourNext" onclick="nextTour()">NEXT →</button></div>
+  </div>
+</div></div>
+<div class="toast" id="toast"></div><div class="achievement" id="achievement"></div><div class="guided-banner" id="guidedBanner"><b id="guidedTitle">GUIDED DEMO</b><div class="sub" id="guidedText"></div></div>
 
 <script>
 const projects=[
@@ -152,7 +166,53 @@ function toggleLiveMode(){live?stopLiveMode():startLiveMode()}
 window.startLiveMode=startLiveMode;window.toggleLiveMode=toggleLiveMode;
 function spawnTask(){const idle=agents.find(a=>a.status==='idle'||a.status==='done')||agents[Math.floor(Math.random()*agents.length)];idle.status='running';idle.progress=8;idle.task=['Research 10 competitors and summarise whitespace.','Build a first-pass onboarding flow.','Create a launch visual direction.','Draft 15 personalised prospect openers.','Sync latest outputs into project memory.'][Math.floor(Math.random()*5)];idle.updates.unshift('New task assigned by founder.');selectedAgent=idle;log('FOUNDER',`Assigned a new task to ${idle.name}.`);renderAll();sparksAt(idle.id,'NEW TASK');toast('New task assigned')}
 window.spawnTask=spawnTask;
-function showTour(){document.getElementById('tourModal').classList.add('show')}function closeTour(){document.getElementById('tourModal').classList.remove('show')}window.showTour=showTour;window.closeTour=closeTour;
+const tourSteps=[
+{target:null,title:'WHAT TOWKAI DOES',body:'TowkAI gives one founder a single place to supervise many AI agents across projects. It answers four questions: Who is working? What are they doing? What changed? Where do I need to intervene?',notice:'This is not an agent chatbot. It is the monitoring and control layer above your agent workforce.'},
+{target:'sidebarPanel',title:'1. SEE YOUR WHOLE WORKFORCE',body:'The left sidebar lists every project and AI agent. Each agent has a live status: Running, Blocked, Needs Review, Idle or Done.',notice:'Use this area to scan the company at a glance. Click any agent to inspect it.'},
+{target:'office',title:'2. WATCH WORK HAPPEN',body:'The centre is a live operations map. Pixel workers represent agents and move to rooms based on the work they are doing: research, build, design, outreach, review or ops.',notice:'Movement is functional, not decorative. A blocked or review-ready agent moves to Founder Review.'},
+{target:'inspectorPanel',title:'3. UNDERSTAND ONE AGENT',body:'The Agent Inspector shows the selected agent’s exact task, progress, priority, ETA, output, health and recent updates.',notice:'This is where a founder understands what an agent is doing without opening the underlying agent tool.'},
+{target:'inspectorPanel',title:'4. TAKE CONTROL',body:'From the inspector, the founder can pause, resume, reprioritise, edit the task, send work to review, approve it or mark it blocked.',notice:'TowkAI is designed for human-in-the-loop supervision, not blind autonomy.'},
+{target:'logs',title:'5. KNOW WHAT CHANGED',body:'The Live Activity Feed records progress, blockers, completions and founder decisions in real time.',notice:'This becomes the operational memory of the one-person company.'},
+{target:'reviewList',title:'6. FOCUS ONLY ON EXCEPTIONS',body:'Founder Attention surfaces the only items requiring human action: blocked agents and outputs waiting for approval.',notice:'Instead of watching every agent continuously, the founder manages by exception.'}
+];
+let tourIndex=0,guidedTimers=[];
+function clearTourHighlights(){document.querySelectorAll('.tour-highlight').forEach(x=>x.classList.remove('tour-highlight'))}
+function renderTour(){
+  const step=tourSteps[tourIndex];
+  clearTourHighlights();
+  document.getElementById('tourStepLabel').textContent=`STEP ${tourIndex+1} OF ${tourSteps.length}`;
+  document.getElementById('tourTitle').textContent=step.title;
+  document.getElementById('tourBody').textContent=step.body;
+  document.getElementById('tourNotice').textContent=step.notice;
+  document.getElementById('tourPrev').style.visibility=tourIndex===0?'hidden':'visible';
+  document.getElementById('tourNext').textContent=tourIndex===tourSteps.length-1?'FINISH ✓':'NEXT →';
+  if(step.target){const el=document.getElementById(step.target);if(el){el.classList.add('tour-highlight');el.scrollIntoView({behavior:'smooth',block:'center',inline:'center'})}}
+}
+function showTour(){tourIndex=0;document.getElementById('tourModal').classList.add('show');renderTour()}
+function closeTour(){document.getElementById('tourModal').classList.remove('show');clearTourHighlights()}
+function nextTour(){if(tourIndex>=tourSteps.length-1){closeTour();return}tourIndex++;renderTour()}
+function prevTour(){if(tourIndex>0){tourIndex--;renderTour()}}
+window.showTour=showTour;window.closeTour=closeTour;window.nextTour=nextTour;window.prevTour=prevTour;
+function guidedMessage(title,text,duration=2300){const b=document.getElementById('guidedBanner');document.getElementById('guidedTitle').textContent=title;document.getElementById('guidedText').textContent=text;b.classList.add('show');const t=setTimeout(()=>b.classList.remove('show'),duration);guidedTimers.push(t)}
+function guidedLater(fn,delay){const t=setTimeout(fn,delay);guidedTimers.push(t)}
+function startGuidedDemo(){
+  guidedTimers.forEach(clearTimeout);guidedTimers=[];stopLiveMode();clearTourHighlights();
+  const researcher=agents.find(a=>a.id==='researcher'),designer=agents.find(a=>a.id==='designer'),outreacher=agents.find(a=>a.id==='outreacher');
+  researcher.status='running';researcher.progress=72;researcher.zone='research';
+  designer.status='blocked';designer.progress=38;designer.zone='review';
+  outreacher.status='review';outreacher.progress=91;outreacher.zone='review';
+  renderAll();
+  guidedMessage('1 · OVERVIEW','The sidebar shows all projects and agents. Green is running; red is blocked; yellow needs review.',3200);
+  document.getElementById('sidebarPanel').classList.add('tour-highlight');
+  guidedLater(()=>{clearTourHighlights();document.getElementById('office').classList.add('tour-highlight');guidedMessage('2 · LIVE MAP','Each pixel worker moves to the room matching its activity. Researcher is working; Designer and Outreacher need you.',3600)},3400);
+  guidedLater(()=>{clearTourHighlights();selectAgent('researcher');document.getElementById('inspectorPanel').classList.add('tour-highlight');guidedMessage('3 · INSPECT','Clicking Researcher reveals its task, 72% progress, output, recent updates, confidence and ETA.',3800)},7200);
+  guidedLater(()=>{clearTourHighlights();designer.status='blocked';selectedAgent=designer;renderAll();document.getElementById('reviewList').classList.add('tour-highlight');guidedMessage('4 · HANDLE A BLOCKER','Designer is blocked by a missing visual decision. Founder Attention makes the exception impossible to miss.',4000)},11200);
+  guidedLater(()=>{clearTourHighlights();resolveAttention('designer','resume');guidedMessage('5 · UNBLOCK','One click unblocks Designer, resumes work and records the founder decision in the activity feed.',3800);document.getElementById('logs').classList.add('tour-highlight')},15400);
+  guidedLater(()=>{clearTourHighlights();selectedAgent=outreacher;renderAll();document.getElementById('reviewList').classList.add('tour-highlight');guidedMessage('6 · APPROVE OUTPUT','Outreacher has finished its sequence. Approve it from Founder Attention to close the loop.',3800)},19600);
+  guidedLater(()=>{resolveAttention('outreacher','approve');clearTourHighlights();document.getElementById('office').classList.add('tour-highlight');guidedMessage('7 · COMPLETE LOOP','You observed the workforce, understood progress, handled a blocker and approved finished work—all from one screen.',5000)},23800);
+  guidedLater(()=>{clearTourHighlights();startLiveMode();guidedMessage('LIVE MODE ON','Agents now continue updating autonomously. Click any agent to explore and intervene.',4500)},29000);
+}
+window.startGuidedDemo=startGuidedDemo;
 document.addEventListener('keydown',e=>{if(e.target.matches('textarea,input'))return;if(e.code==='Space'){e.preventDefault();toggleLiveMode()}if(e.key==='1')setTheme('hawker',document.querySelectorAll('.theme-chip')[0]);if(e.key==='2')setTheme('trading',document.querySelectorAll('.theme-chip')[1]);if(e.key==='3')setTheme('gardens',document.querySelectorAll('.theme-chip')[2]);if(e.key.toLowerCase()==='a')approveAgent()});
 renderAll();log('SYSTEM','TowkAI OS booted. Every pixel worker represents one AI agent.');log('SYSTEM','Start Live Mode to watch autonomous progress, blockers and review requests appear.');setTimeout(showTour,400);
 </script>

@@ -13,3 +13,8 @@ I can start Live Mode and watch progress, updates, blockers and completed output
 Anything blocked or waiting for a decision appears in Founder Attention. Resolving work earns XP and completes quests, turning the operational habit of supervising agents into something intuitive and engaging.
 
 TowkAI is not another chatbot. It is the command centre for a one-person company powered by many AI agents.
+
+
+## Judge self-serve instruction
+
+Click **Quick Tour** for a step-by-step explanation, or click **Guided Demo** to watch the complete product loop automatically.
