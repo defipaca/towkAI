@@ -3,379 +3,158 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="TowkAI OS — a pixel-art MVP for seeing what your AI agents are doing, tracking progress, and controlling them from one place." />
-<title>TowkAI OS — AI Agent IDE MVP</title>
+<meta name="description" content="TowkAI OS — a gamified pixel-art AI agent IDE for monitoring, controlling and coordinating agent work in real time." />
+<title>TowkAI OS — Live AI Agent IDE</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap');
-:root{
-  --bg:#0b1020; --panel:#152033; --panel2:#1d2a40; --panel3:#24344f; --line:#000;
-  --text:#f8fafc; --muted:#94a3b8; --yellow:#fde047; --green:#86efac; --red:#fb7185; --blue:#60a5fa; --purple:#c084fc; --mint:#5eead4; --orange:#fb923c;
-}
-*{box-sizing:border-box} html,body{height:100%} body{margin:0;background:var(--bg);color:var(--text);font-family:"Space Mono",monospace;overflow:hidden;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:24px 24px}
-button,input,textarea,select{font:inherit}.pixel{font-family:"Press Start 2P",monospace}
-.app{height:100vh;display:grid;grid-template-rows:58px 1fr 220px}
-.topbar{display:flex;align-items:center;gap:12px;padding:0 14px;background:#101827;border-bottom:3px solid #000;box-shadow:0 3px 0 #334155}
-.logo{display:flex;align-items:center;gap:10px;min-width:310px}.logo-mark{width:34px;height:34px;background:var(--yellow);border:3px solid #000;box-shadow:4px 4px 0 #000;display:grid;place-items:center;color:#111;font-size:13px}.logo-title{font-size:12px}.logo-sub{font-size:8px;color:var(--muted);margin-top:4px;line-height:1.45}
-.quick-badge{background:#1b2637;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:8px 10px;font-size:10px;max-width:460px}
-.top-stats{margin-left:auto;display:flex;gap:8px}.stat{background:#1b2637;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:7px 10px;font-size:10px}.stat b{color:var(--mint)}
-.main{min-height:0;display:grid;grid-template-columns:300px 1fr 340px}
-.sidebar,.inspector{background:#151e2e;overflow:auto;min-height:0}.sidebar{border-right:3px solid #000}.inspector{border-left:3px solid #000}
-.panel-title{position:sticky;top:0;z-index:5;background:#111827;padding:12px;border-bottom:2px solid #000;font-size:10px;color:var(--yellow)}
-.padded{padding:10px}.card{background:var(--panel2);border:2px solid #000;box-shadow:4px 4px 0 #000;padding:12px;margin-bottom:10px}.card h3{margin:0 0 8px 0;font-size:10px;color:var(--yellow)}.card p{margin:0 0 8px 0;font-size:10px;line-height:1.55}
-.mini-steps{display:grid;gap:6px}.mini-step{font-size:9px;padding:8px;background:#1a2437;border-left:4px solid var(--blue)}.mini-step b{color:var(--yellow)}
-.project-list,.agent-list{display:grid;gap:8px}.project{width:100%;text-align:left;background:#1f2b3d;border:2px solid #000;box-shadow:3px 3px 0 #000;color:#fff;padding:10px;cursor:pointer}.project:hover,.project.active{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000;background:#334155}.project-name{font-weight:700;font-size:12px}.project-meta{font-size:9px;color:var(--muted);margin-top:5px}
-.agent-mini{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;background:#202c3c;border:2px solid #000;padding:8px;cursor:pointer}.agent-mini:hover,.agent-mini.active{background:#334155}.agent-mini span{font-size:10px}.agent-mini small{display:block;color:var(--muted);font-size:8px;margin-top:2px}
-.avatar{width:27px;height:27px;position:relative;border:2px solid #000;background:var(--c,#60a5fa);box-shadow:2px 2px 0 #000}.avatar:before{content:"";position:absolute;left:5px;top:6px;width:4px;height:4px;background:#111;box-shadow:10px 0 #111}.avatar:after{content:"";position:absolute;left:7px;bottom:5px;width:9px;height:3px;background:#111}
-.status-pill{padding:4px 6px;font-size:8px;border:2px solid #000;color:#111;font-weight:700;box-shadow:2px 2px 0 #000}.st-running{background:var(--green)}.st-blocked{background:var(--red)}.st-review{background:var(--yellow)}.st-idle{background:#cbd5e1}.st-done{background:var(--blue)}
-.stage-wrap{min-width:0;min-height:0;position:relative;background:#152033;overflow:hidden}.stage-toolbar{height:58px;display:flex;align-items:center;gap:8px;padding:8px 10px;background:#1a2638;border-bottom:3px solid #000;flex-wrap:wrap}.tab{background:#243244;color:#b9c4d1;border:2px solid #000;padding:7px 10px;font-size:9px;cursor:pointer}.tab.active{background:#3b4d67;color:#fff}.theme-chip{background:#243244;border:2px solid #000;padding:7px 8px;font-size:9px;color:#fff;cursor:pointer}.theme-chip.active{background:#facc15;color:#111}.toolbar-spacer{flex:1}
-.btn{border:2px solid #000;box-shadow:3px 3px 0 #000;color:#111;font-weight:700;padding:7px 10px;font-size:9px;cursor:pointer}.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000}.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}.btn-green{background:var(--green)}.btn-yellow{background:var(--yellow)}.btn-red{background:var(--red)}.btn-blue{background:var(--blue)}
-.stage{position:absolute;inset:58px 0 0;overflow:auto;padding:14px;background:linear-gradient(135deg,#1e293b 25%,#223047 25%,#223047 50%,#1e293b 50%,#1e293b 75%,#223047 75%);background-size:32px 32px}
-.context-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;margin-bottom:12px}.context-card{background:#172233;border:3px solid #000;box-shadow:6px 6px 0 #000;padding:10px}.context-card h2{margin:0 0 8px 0;font-size:11px;color:var(--yellow)}.context-card p{margin:0;font-size:9px;line-height:1.55}.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.pill{background:#0f172a;border:2px solid #000;padding:4px 7px;font-size:8px}
-.office{min-width:940px;min-height:590px;position:relative;border:4px solid #000;box-shadow:8px 8px 0 #000;overflow:hidden}
-.office.theme-hawker{background:linear-gradient(#a7d7c5 0 72%,#7f5539 72% 100%)} .office.theme-trading{background:linear-gradient(#091423 0 68%,#3a4758 68% 100%)} .office.theme-gardens{background:linear-gradient(#8fd3ff 0 56%,#8bd7a3 56% 100%)}
-.office:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff1e 1px,transparent 1px),linear-gradient(90deg,#ffffff1e 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
-.floor-strip{position:absolute;left:0;right:0;bottom:0;height:118px;background:#00000018;border-top:3px solid #000}.skyline{position:absolute;left:20px;right:20px;bottom:118px;height:110px;display:flex;align-items:flex-end;gap:12px;opacity:.75}.skyline i{display:block;width:46px;background:#1f2937;border:3px solid #000;box-shadow:3px 3px 0 #000}
-.landmark{position:absolute;pointer-events:none}.landmark.hawker{left:26px;bottom:18px;display:none;gap:8px;align-items:flex-end}.landmark.hawker .stool{width:24px;height:20px;background:#ef4444;border:2px solid #000}.landmark.hawker .stool:before{content:"";display:block;width:16px;height:4px;background:#fff;margin:4px auto 0}.landmark.hawker .stall{width:92px;height:66px;background:#f8fafc;border:3px solid #000;position:relative;box-shadow:5px 5px 0 #000}.landmark.hawker .stall:before{content:"HAWKER";position:absolute;left:7px;top:8px;background:#facc15;border:2px solid #000;padding:4px;font-size:8px;color:#111;font-family:"Press Start 2P",monospace}
-.landmark.trading{right:20px;bottom:16px;display:none;width:164px;height:92px;background:#111827;border:3px solid #000;box-shadow:5px 5px 0 #000}.landmark.trading:before{content:"MARKET WALL";position:absolute;left:10px;top:8px;color:#5eead4;font-size:8px;font-family:"Press Start 2P",monospace}.landmark.trading:after{content:"BTC ↑ 2.4%\A SOL ↑ 3.8%\A USDT 1.00";white-space:pre;position:absolute;left:12px;top:28px;color:#86efac;font-size:9px;line-height:1.5}
-.landmark.gardens{right:28px;bottom:8px;display:none;width:180px;height:120px}.landmark.gardens .supertree{position:absolute;bottom:0;width:24px;height:72px;background:#6b7280;border:3px solid #000}.landmark.gardens .supertree:before{content:"";position:absolute;left:-18px;top:-36px;width:56px;height:56px;border-radius:50%;background:#22c55e;border:3px solid #000}.landmark.gardens .s1{left:0}.landmark.gardens .s2{left:54px;height:84px}.landmark.gardens .s3{left:112px;height:64px}
-.office.theme-hawker .landmark.hawker,.office.theme-trading .landmark.trading,.office.theme-gardens .landmark.gardens{display:flex}
-.zone{position:absolute;background:#d9e7d6;border:3px solid #000;box-shadow:4px 4px 0 #000;padding:8px}.theme-trading .zone{background:#c7d2fe}.theme-gardens .zone{background:#dcfce7}.zone h3{margin:0;font-size:9px;color:#111}.zone p{margin:5px 0 0;font-size:8px;color:#435}
-.z-research{left:28px;top:54px;width:202px;height:132px}.z-build{left:292px;top:54px;width:202px;height:132px}.z-design{right:292px;top:54px;width:202px;height:132px}.z-outreach{right:28px;top:54px;width:202px;height:132px}.z-review{left:170px;bottom:48px;width:220px;height:130px}.z-ops{right:140px;bottom:48px;width:220px;height:130px}
-.desk{position:absolute;width:54px;height:25px;background:#9a6a42;border:3px solid #000;bottom:12px;left:14px}.desk:before{content:"";position:absolute;width:10px;height:12px;background:#384152;border:2px solid #000;left:20px;top:-15px}
-.legend{position:absolute;left:28px;top:222px;width:262px;background:#fff7cc;color:#111;border:3px solid #000;box-shadow:4px 4px 0 #000;padding:10px;z-index:2}.legend h4{margin:0 0 6px 0;font-size:9px}.legend ul{margin:0;padding-left:18px;font-size:8px;line-height:1.55}
-.runner{position:absolute;width:24px;height:28px;z-index:4;transition:all 1.2s cubic-bezier(.25,.8,.25,1);filter:drop-shadow(3px 3px 0 #000)}.runner .head{position:absolute;left:4px;top:0;width:16px;height:14px;background:#f6c79c;border:2px solid #000}.runner .body{position:absolute;left:2px;top:12px;width:20px;height:12px;background:var(--shirt,#60a5fa);border:2px solid #000}.runner .legs{position:absolute;left:5px;top:24px;width:5px;height:4px;background:#111;box-shadow:9px 0 #111}.runner .bubble{display:none;position:absolute;left:24px;top:-20px;white-space:nowrap;background:#fff;color:#111;border:2px solid #000;padding:5px 7px;font-size:7px;box-shadow:3px 3px 0 #000}.runner.moving .bubble,.runner.blocked .bubble,.runner.review .bubble{display:block}.runner.selected{outline:3px solid var(--yellow);outline-offset:3px}
-.info-tag{position:absolute;background:#fff8c5;color:#111;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:6px 8px;font-size:8px;z-index:3}.floating{animation:float 1.5s ease-in-out infinite}
-.inspector-body{padding:12px}.inspect-head{display:flex;align-items:center;gap:10px}.inspect-name{font-size:12px;font-weight:700}.inspect-role{font-size:9px;color:var(--muted);margin-top:3px}.kv{display:grid;grid-template-columns:88px 1fr;gap:7px;font-size:9px;margin-top:12px}.kv div:nth-child(odd){color:var(--muted)}.progress{height:12px;background:#111;border:2px solid #000;margin-top:5px}.progress i{display:block;height:100%;background:var(--mint)}.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.task-editor{width:100%;min-height:74px;background:#111827;color:#fff;border:2px solid #000;padding:8px;font-size:9px;resize:vertical}.update-list{display:grid;gap:6px;margin-top:10px}.update-item{font-size:9px;padding:8px;background:#1a2437;border-left:4px solid var(--blue)}.queue-item{border-left:4px solid var(--blue);padding:8px;background:#1b2637;margin-top:8px;font-size:9px}.queue-item b{display:block;color:#fff}.queue-item span{color:var(--muted)}
-.console{background:#0b1020;border-top:3px solid #000;min-height:0;display:grid;grid-template-columns:1fr 420px}.terminal{display:flex;flex-direction:column;min-width:0}.terminal-head,.review-head{height:36px;display:flex;align-items:center;justify-content:space-between;background:#111827;border-bottom:2px solid #000;padding:0 10px;font-size:9px;color:var(--yellow)}.logs{overflow:auto;padding:8px 12px;font-size:9px;line-height:1.72}.log-time{color:#64748b}.log-agent{color:var(--mint)}.log-warn{color:var(--yellow)}.review{border-left:3px solid #000;min-width:0}.review-list{padding:8px;overflow:auto;height:171px}.review-card{background:#1e293b;border:2px solid #000;padding:9px;margin-bottom:8px;font-size:9px}.review-card b{color:var(--yellow)}.review-actions{display:flex;gap:6px;margin-top:8px}.review-actions button{padding:5px 7px}
-.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:30}.modal.show{display:flex}.modal-box{width:min(720px,calc(100% - 28px));background:#1e293b;border:4px solid #000;box-shadow:10px 10px 0 #000;padding:18px}.modal-box h2{font-size:14px;margin:0 0 12px}.modal-box p{font-size:10px;line-height:1.6;color:#cbd5e1}.tour-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.tour-card{background:#111827;border:2px solid #000;padding:10px}.tour-card h4{margin:0 0 6px 0;font-size:10px;color:var(--yellow)}.tour-card p{margin:0;font-size:9px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.toast{position:fixed;right:18px;top:70px;background:var(--yellow);color:#111;border:3px solid #000;box-shadow:5px 5px 0 #000;padding:10px 12px;font-size:10px;display:none;z-index:40}.toast.show{display:block}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-@media(max-width:1240px){.main{grid-template-columns:280px 1fr}.inspector{display:none}.context-grid{grid-template-columns:1fr}.console{grid-template-columns:1fr}}
+:root{--bg:#08101d;--panel:#142033;--panel2:#1d2b42;--panel3:#263954;--text:#f8fafc;--muted:#98a8bd;--yellow:#fde047;--green:#86efac;--red:#fb7185;--blue:#60a5fa;--purple:#c084fc;--mint:#5eead4;--orange:#fb923c;--ink:#05070b}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--text);font-family:"Space Mono",monospace;overflow:hidden;background-image:linear-gradient(#ffffff07 1px,transparent 1px),linear-gradient(90deg,#ffffff07 1px,transparent 1px);background-size:24px 24px}
+button,input,textarea,select{font:inherit}.pixel{font-family:"Press Start 2P",monospace}.hidden{display:none!important}
+.app{height:100vh;display:grid;grid-template-rows:62px 1fr 226px}.topbar{display:flex;align-items:center;gap:12px;padding:0 14px;background:#0e1727;border-bottom:3px solid #000;box-shadow:0 3px 0 #334155}.logo{display:flex;align-items:center;gap:10px;min-width:330px}.logo-mark{width:38px;height:38px;background:var(--yellow);border:3px solid #000;box-shadow:4px 4px 0 #000;display:grid;place-items:center;color:#111;font-size:14px}.logo-title{font-size:12px}.logo-sub{font-size:8px;color:var(--muted);margin-top:4px;line-height:1.5}.mission-strip{flex:1;min-width:280px;background:#18263a;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:8px 10px;font-size:9px}.mission-strip b{color:var(--yellow)}.top-stats{display:flex;gap:8px}.stat{background:#18263a;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:7px 9px;font-size:9px}.stat b{color:var(--mint)}
+.main{min-height:0;display:grid;grid-template-columns:310px 1fr 360px}.sidebar,.inspector{background:#131e30;overflow:auto;min-height:0}.sidebar{border-right:3px solid #000}.inspector{border-left:3px solid #000}.panel-title{position:sticky;top:0;z-index:5;background:#0f1929;padding:12px;border-bottom:2px solid #000;font-size:10px;color:var(--yellow)}.padded{padding:10px}.card{background:var(--panel2);border:2px solid #000;box-shadow:4px 4px 0 #000;padding:12px;margin-bottom:10px}.card h3{margin:0 0 8px;font-size:10px;color:var(--yellow)}.card p{margin:0 0 8px;font-size:10px;line-height:1.55}.onboard-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.tiny{font-size:8px;color:var(--muted);line-height:1.45}
+.project-list,.agent-list,.quest-list{display:grid;gap:8px}.project{width:100%;text-align:left;background:#1e2d43;border:2px solid #000;box-shadow:3px 3px 0 #000;color:#fff;padding:10px;cursor:pointer}.project:hover,.project.active{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000;background:#334763}.project-name{font-weight:700;font-size:11px}.project-meta{font-size:8px;color:var(--muted);margin-top:5px}.project-progress{height:7px;background:#09111f;border:1px solid #000;margin-top:7px}.project-progress i{display:block;height:100%;background:var(--mint)}
+.agent-mini{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;background:#1e2d43;border:2px solid #000;padding:8px;cursor:pointer}.agent-mini:hover,.agent-mini.active{background:#334763}.agent-mini span{font-size:9px}.agent-mini small{display:block;color:var(--muted);font-size:8px;margin-top:3px}.avatar{width:27px;height:27px;position:relative;border:2px solid #000;background:var(--c,#60a5fa);box-shadow:2px 2px 0 #000}.avatar:before{content:"";position:absolute;left:5px;top:6px;width:4px;height:4px;background:#111;box-shadow:10px 0 #111}.avatar:after{content:"";position:absolute;left:7px;bottom:5px;width:9px;height:3px;background:#111}.status-pill{padding:4px 6px;font-size:7px;border:2px solid #000;color:#111;font-weight:700;box-shadow:2px 2px 0 #000;white-space:nowrap}.st-running{background:var(--green)}.st-blocked{background:var(--red)}.st-review{background:var(--yellow)}.st-idle{background:#cbd5e1}.st-done{background:var(--blue)}
+.quest{background:#1b293d;border:2px solid #000;padding:8px;font-size:8px}.quest b{display:block;color:var(--yellow);margin-bottom:4px}.quest.done{opacity:.55;text-decoration:line-through}.quest-reward{float:right;color:var(--mint)}
+.stage-wrap{min-width:0;min-height:0;position:relative;background:#152033;overflow:hidden}.stage-toolbar{height:62px;display:flex;align-items:center;gap:7px;padding:8px 10px;background:#18263a;border-bottom:3px solid #000;flex-wrap:wrap}.tab,.theme-chip,.speed-chip{background:#24344f;color:#cbd5e1;border:2px solid #000;padding:7px 9px;font-size:8px;cursor:pointer}.tab.active,.theme-chip.active,.speed-chip.active{background:var(--yellow);color:#111}.toolbar-spacer{flex:1}.btn{border:2px solid #000;box-shadow:3px 3px 0 #000;color:#111;font-weight:700;padding:7px 10px;font-size:8px;cursor:pointer}.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000}.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}.btn-green{background:var(--green)}.btn-yellow{background:var(--yellow)}.btn-red{background:var(--red)}.btn-blue{background:var(--blue)}.btn-purple{background:var(--purple)}
+.stage{position:absolute;inset:62px 0 0;overflow:auto;padding:14px;background:linear-gradient(135deg,#1d2a3d 25%,#23344b 25%,#23344b 50%,#1d2a3d 50%,#1d2a3d 75%,#23344b 75%);background-size:32px 32px}.context-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:12px}.context-card{background:#142033;border:3px solid #000;box-shadow:6px 6px 0 #000;padding:10px}.context-card h2{margin:0 0 8px;font-size:10px;color:var(--yellow)}.context-card p{margin:0;font-size:9px;line-height:1.55}.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.pill{background:#0d1727;border:2px solid #000;padding:4px 7px;font-size:8px}.alert-pill{background:var(--red);color:#111}
+.office{min-width:980px;min-height:620px;position:relative;border:4px solid #000;box-shadow:8px 8px 0 #000;overflow:hidden}.office.theme-hawker{background:linear-gradient(#a7d7c5 0 72%,#7f5539 72% 100%)}.office.theme-trading{background:linear-gradient(#091423 0 68%,#3a4758 68% 100%)}.office.theme-gardens{background:linear-gradient(#8fd3ff 0 56%,#8bd7a3 56% 100%)}.office:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff1e 1px,transparent 1px),linear-gradient(90deg,#ffffff1e 1px,transparent 1px);background-size:32px 32px;pointer-events:none}.floor-strip{position:absolute;left:0;right:0;bottom:0;height:122px;background:#00000018;border-top:3px solid #000}.skyline{position:absolute;left:20px;right:20px;bottom:122px;height:110px;display:flex;align-items:flex-end;gap:12px;opacity:.72}.skyline i{display:block;width:46px;background:#1f2937;border:3px solid #000;box-shadow:3px 3px 0 #000}.landmark{position:absolute;pointer-events:none}.landmark.hawker{left:25px;bottom:18px;display:none;gap:8px;align-items:flex-end}.landmark.hawker .stall{width:100px;height:68px;background:#fff;border:3px solid #000;box-shadow:5px 5px 0 #000;position:relative}.landmark.hawker .stall:before{content:"AGENT STALL";position:absolute;left:8px;top:8px;background:#facc15;border:2px solid #000;padding:4px;font-size:7px;color:#111;font-family:"Press Start 2P",monospace}.landmark.hawker .stool{width:24px;height:20px;background:#ef4444;border:2px solid #000}.landmark.trading{right:22px;bottom:16px;display:none;width:176px;height:94px;background:#111827;border:3px solid #000;box-shadow:5px 5px 0 #000}.landmark.trading:before{content:"LIVE OPS WALL";position:absolute;left:10px;top:8px;color:#5eead4;font-size:7px;font-family:"Press Start 2P",monospace}.landmark.trading:after{content:"AGENTS 5\A RUNNING 3\A ALERTS 2";white-space:pre;position:absolute;left:12px;top:30px;color:#86efac;font-size:9px;line-height:1.5}.landmark.gardens{right:28px;bottom:8px;display:none;width:180px;height:120px}.supertree{position:absolute;bottom:0;width:24px;height:72px;background:#6b7280;border:3px solid #000}.supertree:before{content:"";position:absolute;left:-18px;top:-36px;width:56px;height:56px;border-radius:50%;background:#22c55e;border:3px solid #000}.s1{left:0}.s2{left:54px;height:84px}.s3{left:112px;height:64px}.office.theme-hawker .landmark.hawker,.office.theme-trading .landmark.trading,.office.theme-gardens .landmark.gardens{display:flex}
+.zone{position:absolute;background:#d9e7d6;border:3px solid #000;box-shadow:4px 4px 0 #000;padding:8px}.theme-trading .zone{background:#c7d2fe}.theme-gardens .zone{background:#dcfce7}.zone h3{margin:0;font-size:8px;color:#111}.zone p{margin:5px 0 0;font-size:8px;color:#435}.zone.active-zone{outline:5px solid var(--yellow);outline-offset:4px}.z-research{left:28px;top:56px;width:202px;height:132px}.z-build{left:286px;top:56px;width:202px;height:132px}.z-design{right:286px;top:56px;width:202px;height:132px}.z-outreach{right:28px;top:56px;width:202px;height:132px}.z-review{left:178px;bottom:50px;width:225px;height:132px}.z-ops{right:150px;bottom:50px;width:225px;height:132px}.desk{position:absolute;width:54px;height:25px;background:#9a6a42;border:3px solid #000;bottom:12px;left:14px}.desk:before{content:"";position:absolute;width:10px;height:12px;background:#384152;border:2px solid #000;left:20px;top:-15px}.legend{position:absolute;left:28px;top:226px;width:270px;background:#fff7cc;color:#111;border:3px solid #000;box-shadow:4px 4px 0 #000;padding:10px;z-index:2}.legend h4{margin:0 0 6px;font-size:8px}.legend ul{margin:0;padding-left:18px;font-size:8px;line-height:1.55}.quest-board{position:absolute;right:28px;top:226px;width:260px;background:#18263a;color:#fff;border:3px solid #000;box-shadow:4px 4px 0 #000;padding:10px;z-index:2}.quest-board h4{margin:0 0 8px;color:var(--yellow);font-size:8px}.quest-board p{font-size:8px;margin:0 0 7px;line-height:1.5}.xpbar{height:13px;background:#0a1120;border:2px solid #000}.xpbar i{display:block;height:100%;background:var(--mint)}
+.runner{position:absolute;width:24px;height:28px;z-index:4;transition:all .9s cubic-bezier(.25,.8,.25,1);filter:drop-shadow(3px 3px 0 #000);cursor:pointer}.runner .head{position:absolute;left:4px;top:0;width:16px;height:14px;background:#f6c79c;border:2px solid #000}.runner .body{position:absolute;left:2px;top:12px;width:20px;height:12px;background:var(--shirt,#60a5fa);border:2px solid #000}.runner .legs{position:absolute;left:5px;top:24px;width:5px;height:4px;background:#111;box-shadow:9px 0 #111}.runner .bubble{display:none;position:absolute;left:24px;top:-23px;white-space:nowrap;background:#fff;color:#111;border:2px solid #000;padding:5px 7px;font-size:7px;box-shadow:3px 3px 0 #000}.runner.moving .bubble,.runner.blocked .bubble,.runner.review .bubble,.runner:hover .bubble{display:block}.runner.selected{outline:3px solid var(--yellow);outline-offset:3px}.runner.pulse{animation:pulse .7s steps(2) 2}.spark{position:absolute;width:6px;height:6px;background:var(--yellow);border:1px solid #000;z-index:8;animation:spark 1s ease-out forwards}.coin{position:absolute;color:#111;background:var(--yellow);border:2px solid #000;padding:3px 5px;font-size:7px;z-index:8;animation:coin 1.2s ease-out forwards}
+.inspector-body{padding:12px}.inspect-head{display:flex;align-items:center;gap:10px}.inspect-name{font-size:12px;font-weight:700}.inspect-role{font-size:9px;color:var(--muted);margin-top:3px}.kv{display:grid;grid-template-columns:92px 1fr;gap:7px;font-size:9px;margin-top:12px}.kv div:nth-child(odd){color:var(--muted)}.progress{height:13px;background:#0a1120;border:2px solid #000;margin-top:5px}.progress i{display:block;height:100%;background:var(--mint)}.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.task-editor{width:100%;min-height:76px;background:#0d1727;color:#fff;border:2px solid #000;padding:8px;font-size:9px;resize:vertical}.update-list{display:grid;gap:6px;margin-top:10px}.update-item{font-size:9px;padding:8px;background:#17243a;border-left:4px solid var(--blue)}.output-box{background:#0d1727;border:2px solid #000;padding:9px;font-size:9px;line-height:1.5}.priority-row{display:flex;gap:6px;margin-top:8px}.priority-row button{flex:1}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.mini-stat{background:#132035;border:2px solid #000;padding:8px;font-size:8px}.mini-stat b{display:block;color:var(--mint);font-size:12px;margin-top:4px}
+.console{background:#08101d;border-top:3px solid #000;min-height:0;display:grid;grid-template-columns:1fr 430px}.terminal{display:flex;flex-direction:column;min-width:0}.terminal-head,.review-head{height:36px;display:flex;align-items:center;justify-content:space-between;background:#0f1929;border-bottom:2px solid #000;padding:0 10px;font-size:9px;color:var(--yellow)}.logs{overflow:auto;padding:8px 12px;font-size:9px;line-height:1.72}.log-time{color:#64748b}.log-agent{color:var(--mint)}.log-warn{color:var(--yellow)}.review{border-left:3px solid #000;min-width:0}.review-list{padding:8px;overflow:auto;height:177px}.review-card{background:#1b293d;border:2px solid #000;padding:9px;margin-bottom:8px;font-size:9px}.review-card b{color:var(--yellow)}.review-actions{display:flex;gap:6px;margin-top:8px}.review-actions button{padding:5px 7px}
+.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;z-index:30}.modal.show{display:flex}.modal-box{width:min(760px,calc(100% - 28px));background:#1d2b42;border:4px solid #000;box-shadow:10px 10px 0 #000;padding:18px}.modal-box h2{font-size:14px;margin:0 0 12px}.modal-box p{font-size:10px;line-height:1.6;color:#cbd5e1}.tour-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.tour-card{background:#0f1929;border:2px solid #000;padding:10px}.tour-card h4{margin:0 0 6px;font-size:9px;color:var(--yellow)}.tour-card p{margin:0;font-size:9px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.toast{position:fixed;right:18px;top:72px;background:var(--yellow);color:#111;border:3px solid #000;box-shadow:5px 5px 0 #000;padding:10px 12px;font-size:9px;display:none;z-index:40}.toast.show{display:block}.achievement{position:fixed;left:50%;top:78px;transform:translateX(-50%);background:#facc15;color:#111;border:4px solid #000;box-shadow:7px 7px 0 #000;padding:12px 18px;font-size:9px;display:none;z-index:45}.achievement.show{display:block;animation:drop .3s steps(3)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}@keyframes spark{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx),var(--dy))}}@keyframes coin{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-55px)}}@keyframes drop{0%{transform:translate(-50%,-30px)}100%{transform:translate(-50%,0)}}
+@media(max-width:1280px){.main{grid-template-columns:290px 1fr}.inspector{display:none}.context-grid{grid-template-columns:1fr}.console{grid-template-columns:1fr}.top-stats{display:none}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="topbar">
-    <div class="logo">
-      <div class="logo-mark pixel">頭</div>
-      <div>
-        <div class="logo-title pixel">TOWKAI OS</div>
-        <div class="logo-sub">PIXEL-ART AI AGENT IDE · SEE WHAT EVERY AGENT IS DOING, TRACK PROGRESS, AND TAKE CONTROL</div>
-      </div>
-    </div>
-    <div class="quick-badge"><b>MVP:</b> one screen to monitor AI agents across projects, see live status and updates, and pause, redirect or approve work.</div>
-    <div class="top-stats">
-      <div class="stat">AGENTS <b id="statAgents">5</b></div>
-      <div class="stat">RUNNING <b id="statRunning">3</b></div>
-      <div class="stat">NEEDS YOU <b id="statAttention">2</b></div>
-      <div class="stat">PROJECTS <b id="statProjects">4</b></div>
-    </div>
-  </header>
+<header class="topbar">
+  <div class="logo"><div class="logo-mark pixel">頭</div><div><div class="logo-title pixel">TOWKAI OS</div><div class="logo-sub">LIVE PIXEL AI AGENT IDE · SEE, TRACK AND CONTROL YOUR AI WORKFORCE</div></div></div>
+  <div class="mission-strip"><b>CORE MVP:</b> Every pixel worker is an AI agent. Watch live activity, inspect progress, and intervene from one screen.</div>
+  <div class="top-stats"><div class="stat">AGENTS <b id="statAgents">5</b></div><div class="stat">RUNNING <b id="statRunning">3</b></div><div class="stat">NEEDS YOU <b id="statAttention">2</b></div><div class="stat">XP <b id="statXp">120</b></div></div>
+</header>
 
-  <main class="main">
-    <aside class="sidebar">
-      <div class="panel-title pixel">START HERE</div>
-      <div class="padded">
-        <div class="card">
-          <h3 class="pixel">WHAT YOU ARE BUILDING</h3>
-          <p><b>TowkAI OS</b> is a gamified control room for AI agents. Instead of wondering what each agent is doing across tools, you can see all agents in one place, watch their progress, read recent updates, and control them.</p>
-          <div class="mini-steps">
-            <div class="mini-step"><b>1.</b> Pick an agent or project.</div>
-            <div class="mini-step"><b>2.</b> Watch where the pixel workers move based on their activity.</div>
-            <div class="mini-step"><b>3.</b> Use the right panel to inspect, pause, redirect or approve work.</div>
-          </div>
-        </div>
-      </div>
-      <div class="panel-title pixel">PROJECTS</div>
-      <div class="padded"><div class="project-list" id="projectList"></div></div>
-      <div class="panel-title pixel">AI AGENTS</div>
-      <div class="padded"><div class="agent-list" id="agentMiniList"></div></div>
-    </aside>
-
-    <section class="stage-wrap">
-      <div class="stage-toolbar">
-        <button class="tab active">OPERATIONS MAP</button>
-        <button class="tab">AGENT FEED</button>
-        <button class="tab">TASKS</button>
-        <button class="tab">FILES</button>
-        <span style="font-size:9px;color:var(--muted);margin-left:6px">SCENE:</span>
-        <button class="theme-chip active" onclick="setTheme('hawker',this)">HAWKER</button>
-        <button class="theme-chip" onclick="setTheme('trading',this)">TRADING FLOOR</button>
-        <button class="theme-chip" onclick="setTheme('gardens',this)">GARDENS</button>
-        <div class="toolbar-spacer"></div>
-        <button class="btn btn-blue" onclick="showTour()">? QUICK TOUR</button>
-        <button class="btn btn-yellow" onclick="runSimulation()">▶ RUN LIVE DEMO</button>
-      </div>
-
-      <div class="stage">
-        <div class="context-grid">
-          <div class="context-card">
-            <h2 class="pixel">MVP IN 10 SECONDS</h2>
-            <p>This is an AI agent IDE. Every pixel worker is an agent. The map shows <b>where</b> an agent is working, the left panel shows <b>which agents and projects exist</b>, the right panel shows <b>what a selected agent is doing</b>, and the bottom feed shows <b>recent updates and outputs</b>.</p>
-          </div>
-          <div class="context-card">
-            <h2 class="pixel">SELECTED PROJECT</h2>
-            <p><b id="activeProjectLabel">Customer Research</b><br><span id="activeProjectMeta">Understand user pains and opportunities</span></p>
-            <div class="pill-row"><span class="pill" id="themeLabel">Hawker Centre Skin</span><span class="pill">Visibility</span><span class="pill">Control</span></div>
-          </div>
-          <div class="context-card">
-            <h2 class="pixel">WHY IT HELPS</h2>
-            <p>Founders can instantly tell: who is running, who is blocked, what needs approval, and what changed recently — without digging across multiple tools.</p>
-            <div class="pill-row"><span class="pill">Live status</span><span class="pill">Updates</span><span class="pill">Approvals</span></div>
-          </div>
-        </div>
-
-        <div class="office theme-hawker" id="office">
-          <div class="skyline"><i style="height:52px"></i><i style="height:88px"></i><i style="height:68px"></i><i style="height:96px"></i><i style="height:58px"></i><i style="height:78px"></i></div>
-          <div class="floor-strip"></div>
-          <div class="landmark hawker"><div class="stall"></div><div class="stool"></div><div class="stool"></div><div class="stool"></div></div>
-          <div class="landmark trading"></div>
-          <div class="landmark gardens"><div class="supertree s1"></div><div class="supertree s2"></div><div class="supertree s3"></div></div>
-
-          <div class="zone z-research"><h3 class="pixel">RESEARCH BAY</h3><p>Investigates, summarises and finds evidence.</p><div class="desk"></div></div>
-          <div class="zone z-build"><h3 class="pixel">BUILD LAB</h3><p>Creates flows, drafts and prototypes.</p><div class="desk"></div></div>
-          <div class="zone z-design"><h3 class="pixel">DESIGN STUDIO</h3><p>Prepares visuals, decks and UI updates.</p><div class="desk"></div></div>
-          <div class="zone z-outreach"><h3 class="pixel">OUTREACH DESK</h3><p>Runs communication, sequences and campaigns.</p><div class="desk"></div></div>
-          <div class="zone z-review"><h3 class="pixel">FOUNDER REVIEW</h3><p>Anything waiting for your decision comes here.</p><div class="desk"></div></div>
-          <div class="zone z-ops"><h3 class="pixel">OPS & MEMORY</h3><p>Logs, handoffs, CRM and system memory.</p><div class="desk"></div></div>
-
-          <div class="legend">
-            <h4 class="pixel">HOW TO READ THIS</h4>
-            <ul>
-              <li><b>Pixel worker</b> = one AI agent.</li>
-              <li><b>Room</b> = the kind of work that agent is doing.</li>
-              <li><b>Bubble</b> = current activity or blocker.</li>
-              <li><b>Founder Review</b> = items waiting for your action.</li>
-            </ul>
-          </div>
-
-          <div class="info-tag floating" style="left:305px;top:114px">Researcher is analysing 24 interview notes</div>
-          <div class="info-tag" style="left:620px;top:244px">Outreacher needs approval</div>
-        </div>
-      </div>
-    </section>
-
-    <aside class="inspector">
-      <div class="panel-title pixel">AGENT INSPECTOR</div>
-      <div class="inspector-body" id="inspector"></div>
-    </aside>
-  </main>
-
-  <section class="console">
-    <div class="terminal">
-      <div class="terminal-head pixel"><span>LIVE ACTIVITY FEED</span><span>WHAT CHANGED RECENTLY</span></div>
-      <div class="logs" id="logs"></div>
-    </div>
-    <div class="review">
-      <div class="review-head pixel"><span>FOUNDER ATTENTION</span><span id="reviewCount">2 ITEMS</span></div>
-      <div class="review-list" id="reviewList"></div>
-    </div>
-  </section>
-</div>
-
-<div class="modal" id="tourModal">
-  <div class="modal-box">
-    <h2 class="pixel">WELCOME TO TOWKAI OS</h2>
-    <p>This MVP is about <b>seeing what all your AI agents are doing</b>, not just generating tasks. TowkAI gives you one visual control room to monitor agent work across projects, read updates, and intervene when needed.</p>
-    <div class="tour-grid">
-      <div class="tour-card"><h4 class="pixel">1. SEE EVERYTHING</h4><p>The left panel lists projects and agents. Status labels show who is running, blocked, waiting for review, idle or done.</p></div>
-      <div class="tour-card"><h4 class="pixel">2. WATCH LIVE MOVEMENT</h4><p>Pixel agents move to different rooms based on their activity: research, build, design, outreach, review or ops.</p></div>
-      <div class="tour-card"><h4 class="pixel">3. INSPECT AN AGENT</h4><p>Click an agent to see its task, progress, recent updates and outputs. You can pause, resume, redirect or approve it.</p></div>
-      <div class="tour-card"><h4 class="pixel">4. HANDLE EXCEPTIONS</h4><p>Anything blocked or waiting for approval appears in Founder Attention so the founder always knows where to act.</p></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-blue" onclick="closeTour()">GOT IT</button>
-      <button class="btn btn-yellow" onclick="closeTour(); runSimulation();">START DEMO</button>
+<main class="main">
+<aside class="sidebar">
+  <div class="panel-title pixel">FIRST 30 SECONDS</div>
+  <div class="padded">
+    <div class="card">
+      <h3 class="pixel">WHAT IS TOWKAI?</h3>
+      <p>A gamified control room for AI agents. You see who is working, what changed, who is blocked, and what needs your approval.</p>
+      <div class="onboard-actions"><button class="btn btn-blue" onclick="showTour()">QUICK TOUR</button><button class="btn btn-yellow" onclick="startLiveMode()">START LIVE MODE</button></div>
+      <div class="tiny" style="margin-top:9px">Keyboard: <b>Space</b> live mode · <b>1–3</b> scene · <b>A</b> approve selected</div>
     </div>
   </div>
+  <div class="panel-title pixel">PROJECTS</div><div class="padded"><div class="project-list" id="projectList"></div></div>
+  <div class="panel-title pixel">AI AGENTS</div><div class="padded"><div class="agent-list" id="agentMiniList"></div></div>
+  <div class="panel-title pixel">DAILY QUESTS</div><div class="padded"><div class="quest-list" id="questList"></div></div>
+</aside>
+
+<section class="stage-wrap">
+  <div class="stage-toolbar">
+    <button class="tab active">LIVE MAP</button><button class="tab">TASKS</button><button class="tab">FILES</button><button class="tab">MEMORY</button>
+    <span style="font-size:8px;color:var(--muted);margin-left:5px">SCENE:</span>
+    <button class="theme-chip active" onclick="setTheme('hawker',this)">HAWKER</button><button class="theme-chip" onclick="setTheme('trading',this)">TRADING</button><button class="theme-chip" onclick="setTheme('gardens',this)">GARDENS</button>
+    <span style="font-size:8px;color:var(--muted);margin-left:5px">SPEED:</span>
+    <button class="speed-chip" onclick="setSpeed(.6,this)">0.5×</button><button class="speed-chip active" onclick="setSpeed(1,this)">1×</button><button class="speed-chip" onclick="setSpeed(2,this)">2×</button>
+    <div class="toolbar-spacer"></div><button class="btn btn-purple" onclick="spawnTask()">+ RANDOM TASK</button><button class="btn btn-yellow" id="liveBtn" onclick="toggleLiveMode()">▶ LIVE MODE</button>
+  </div>
+  <div class="stage">
+    <div class="context-grid">
+      <div class="context-card"><h2 class="pixel">MVP IN 10 SECONDS</h2><p>The left panel shows all projects and agents. The map shows where agents are working. Click any pixel worker to inspect its task, progress, updates and output. Anything blocked or waiting for approval appears in Founder Attention.</p></div>
+      <div class="context-card"><h2 class="pixel">SELECTED PROJECT</h2><p><b id="activeProjectLabel">Customer Research</b><br><span id="activeProjectMeta">Understand user pains and opportunities</span></p><div class="pill-row"><span class="pill" id="themeLabel">Hawker Skin</span><span class="pill">Real-time</span><span class="pill">Human control</span></div></div>
+      <div class="context-card"><h2 class="pixel">NEXT BEST ACTION</h2><p id="nextAction">Approve Outreacher's completed sequence or unblock Designer.</p><div class="pill-row"><span class="pill alert-pill" id="alertPill">2 need attention</span><span class="pill">+20 XP each</span></div></div>
+    </div>
+    <div class="office theme-hawker" id="office">
+      <div class="skyline"><i style="height:52px"></i><i style="height:88px"></i><i style="height:68px"></i><i style="height:96px"></i><i style="height:58px"></i><i style="height:78px"></i></div><div class="floor-strip"></div>
+      <div class="landmark hawker"><div class="stall"></div><div class="stool"></div><div class="stool"></div><div class="stool"></div></div><div class="landmark trading"></div><div class="landmark gardens"><div class="supertree s1"></div><div class="supertree s2"></div><div class="supertree s3"></div></div>
+      <div class="zone z-research" data-zone="research"><h3 class="pixel">RESEARCH BAY</h3><p>Investigates evidence and summarises findings.</p><div class="desk"></div></div>
+      <div class="zone z-build" data-zone="build"><h3 class="pixel">BUILD LAB</h3><p>Creates flows, drafts and prototypes.</p><div class="desk"></div></div>
+      <div class="zone z-design" data-zone="design"><h3 class="pixel">DESIGN STUDIO</h3><p>Prepares visuals, decks and UI directions.</p><div class="desk"></div></div>
+      <div class="zone z-outreach" data-zone="outreach"><h3 class="pixel">OUTREACH DESK</h3><p>Writes sequences and prepares campaigns.</p><div class="desk"></div></div>
+      <div class="zone z-review" data-zone="review"><h3 class="pixel">FOUNDER REVIEW</h3><p>Anything waiting for your decision comes here.</p><div class="desk"></div></div>
+      <div class="zone z-ops" data-zone="ops"><h3 class="pixel">OPS & MEMORY</h3><p>Logs, handoffs, CRM and system memory.</p><div class="desk"></div></div>
+      <div class="legend"><h4 class="pixel">HOW TO READ THIS</h4><ul><li>Pixel worker = one AI agent.</li><li>Room = current work type.</li><li>Bubble = live status or blocker.</li><li>Click an agent to control it.</li></ul></div>
+      <div class="quest-board"><h4 class="pixel">FOUNDER LEVEL 3</h4><p id="levelText">120 / 200 XP · Resolve alerts and approve outputs to level up.</p><div class="xpbar"><i id="xpFill" style="width:60%"></i></div><p style="margin-top:8px"><b>Live bonus:</b> agents autonomously update progress, encounter blockers and submit outputs.</p></div>
+    </div>
+  </div>
+</section>
+
+<aside class="inspector"><div class="panel-title pixel">AGENT INSPECTOR</div><div class="inspector-body" id="inspector"></div></aside>
+</main>
+
+<section class="console">
+  <div class="terminal"><div class="terminal-head pixel"><span>LIVE ACTIVITY FEED</span><span id="liveIndicator">PAUSED</span></div><div class="logs" id="logs"></div></div>
+  <div class="review"><div class="review-head pixel"><span>FOUNDER ATTENTION</span><span id="reviewCount">2 ITEMS</span></div><div class="review-list" id="reviewList"></div></div>
+</section>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="modal" id="tourModal"><div class="modal-box"><h2 class="pixel">WELCOME TO TOWKAI OS</h2><p>TowkAI is not another agent chatbot. It is the control layer above your AI workforce: one place to see what every agent is doing, follow progress and updates, and intervene when needed.</p><div class="tour-grid"><div class="tour-card"><h4 class="pixel">1. SEE</h4><p>Projects and agents are visible in the left sidebar with live status labels.</p></div><div class="tour-card"><h4 class="pixel">2. WATCH</h4><p>Pixel agents move between rooms according to their real activity state.</p></div><div class="tour-card"><h4 class="pixel">3. CONTROL</h4><p>Click an agent to pause, reprioritise, redirect, approve or block it.</p></div><div class="tour-card"><h4 class="pixel">4. PLAY</h4><p>Resolve alerts, complete quests and earn XP while running your one-person company.</p></div></div><div class="modal-actions"><button class="btn btn-blue" onclick="closeTour()">EXPLORE</button><button class="btn btn-yellow" onclick="closeTour();startLiveMode()">START LIVE DEMO</button></div></div></div>
+<div class="toast" id="toast"></div><div class="achievement" id="achievement"></div>
 
 <script>
 const projects=[
-  {id:'research',name:'Customer Research',meta:'Understand user pains and opportunities'},
-  {id:'launch',name:'Product Launch',meta:'Prepare landing page and launch assets'},
-  {id:'sales',name:'Sales Pipeline',meta:'Generate leads and outreach sequences'},
-  {id:'content',name:'Content Engine',meta:'Produce posts, docs and campaign copy'}
+{id:'research',name:'Customer Research',meta:'Understand user pains and opportunities',progress:74},
+{id:'launch',name:'Product Launch',meta:'Prepare product, deck and launch assets',progress:52},
+{id:'sales',name:'Sales Pipeline',meta:'Generate leads and outbound sequences',progress:66},
+{id:'content',name:'Content Engine',meta:'Produce posts, docs and campaign copy',progress:41}
 ];
-
-const attentionItems=[
-  {agent:'Outreacher',title:'Outreach copy waiting for approval',detail:'Drafted 3 email variants for SME founders.',status:'review'},
-  {agent:'Designer',title:'Blocked by missing brand direction',detail:'Needs decision on hero visual style before exporting deck slides.',status:'blocked'}
-];
-
 const agents=[
-  {id:'researcher',name:'Researcher',role:'Research Agent',project:'research',color:'#60a5fa',status:'running',task:'Analyse 24 interview notes and surface top pain points.',progress:72,zone:[78,108],updates:['Clustered 24 interview notes into 5 pain themes.','Flagged pricing confusion as the top repeated complaint.','Preparing summary for founder review.'],output:'Pain-point summary with top 5 opportunities.'},
-  {id:'builder',name:'Builder',role:'Product Agent',project:'launch',color:'#c084fc',status:'running',task:'Draft homepage wireframe and onboarding flow.',progress:54,zone:[344,108],updates:['Finished hero section wireframe.','Started onboarding flow copy.','Next step: connect CTA to sign-up flow.'],output:'Homepage wireframe + onboarding flow draft.'},
-  {id:'designer',name:'Designer',role:'Design Agent',project:'launch',color:'#fb923c',status:'blocked',task:'Create launch deck visual system and hero image directions.',progress:38,zone:[612,108],updates:['Created 2 visual directions.','Missing founder decision on preferred visual language.','Waiting for style approval.'],output:'2 concept boards, pending decision.'},
-  {id:'outreacher',name:'Outreacher',role:'Growth Agent',project:'sales',color:'#fde047',status:'review',task:'Write 3-step outbound sequence for SME prospects.',progress:91,zone:[880,108],updates:['Generated 3 email variants.','Personalised first lines for 12 leads.','Waiting for founder approval before send.'],output:'Outbound email sequence ready to send.'},
-  {id:'operator',name:'Operator',role:'Ops Agent',project:'content',color:'#86efac',status:'done',task:'Sync content calendar, update CRM, and log finished tasks.',progress:100,zone:[676,430],updates:['Synced 5 tasks to CRM.','Updated content calendar deadlines.','Archived completed workflows.'],output:'Ops sync completed.'}
+{id:'researcher',name:'Researcher',role:'Research Agent',project:'research',color:'#60a5fa',status:'running',priority:'High',task:'Analyse 24 interview notes and surface top pain points.',progress:72,updates:['Clustered interview notes into 5 pain themes.','Flagged pricing confusion as the strongest repeated complaint.','Preparing a founder-ready summary.'],output:'Pain-point summary with top 5 opportunities.',zone:'research'},
+{id:'builder',name:'Builder',role:'Product Agent',project:'launch',color:'#c084fc',status:'running',priority:'High',task:'Draft homepage wireframe and onboarding flow.',progress:54,updates:['Finished hero section wireframe.','Started onboarding copy.','Next: connect CTA to sign-up flow.'],output:'Homepage wireframe + onboarding flow draft.',zone:'build'},
+{id:'designer',name:'Designer',role:'Design Agent',project:'launch',color:'#fb923c',status:'blocked',priority:'Medium',task:'Create launch deck visual system and hero directions.',progress:38,updates:['Created 2 visual directions.','Needs founder decision on visual language.','Waiting for style approval.'],output:'2 concept boards, pending decision.',zone:'review'},
+{id:'outreacher',name:'Outreacher',role:'Growth Agent',project:'sales',color:'#fde047',status:'review',priority:'High',task:'Write 3-step outbound sequence for SME prospects.',progress:91,updates:['Generated 3 email variants.','Personalised first lines for 12 leads.','Waiting for founder approval before send.'],output:'Outbound email sequence ready to send.',zone:'review'},
+{id:'operator',name:'Operator',role:'Ops Agent',project:'content',color:'#86efac',status:'done',priority:'Low',task:'Sync content calendar, CRM and finished tasks.',progress:100,updates:['Synced 5 tasks to CRM.','Updated content calendar deadlines.','Archived completed workflows.'],output:'Ops sync completed.',zone:'ops'}
 ];
-
-const zonePositions={research:[110,240],build:[374,240],design:[645,240],outreach:[812,240],review:[276,430],ops:[680,430],idle:[80,470]};
-const statusMap={running:'st-running',blocked:'st-blocked',review:'st-review',idle:'st-idle',done:'st-done'};
-let activeProject=projects[0],selectedAgent=agents[0],currentTheme='hawker',simIndex=0,simTimer=null;
-
+const quests=[{id:'q1',text:'Approve one completed output',reward:20,done:false},{id:'q2',text:'Unblock one agent',reward:20,done:false},{id:'q3',text:'Run live mode for 10 seconds',reward:30,done:false}];
+const zonePositions={research:[110,250],build:[370,250],design:[645,250],outreach:[846,250],review:[282,455],ops:[690,455],idle:[80,500]};
+const statusClass={running:'st-running',blocked:'st-blocked',review:'st-review',idle:'st-idle',done:'st-done'};
+let activeProject=projects[0],selectedAgent=agents[0],theme='hawker',speed=1,xp=120,level=3,live=false,tickHandle=null,liveStartedAt=0,questLiveTimer=null;
 const logsEl=document.getElementById('logs');
-function log(agent,msg,type=''){const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});logsEl.innerHTML+=`<div><span class="log-time">[${t}]</span> <span class="log-agent">${agent}</span> <span class="${type==='warn'?'log-warn':''}">${msg}</span></div>`;logsEl.scrollTop=logsEl.scrollHeight}
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)}
-function statusText(s){return ({running:'Running',blocked:'Blocked',review:'Needs Review',idle:'Idle',done:'Done'})[s]||s}
-
-function renderProjects(){
-  document.getElementById('projectList').innerHTML=projects.map(p=>`<button class="project ${p.id===activeProject.id?'active':''}" onclick="selectProject('${p.id}')"><div class="project-name">${p.name}</div><div class="project-meta">${p.meta}</div></button>`).join('');
-}
-
-function renderAgentList(){
-  document.getElementById('agentMiniList').innerHTML=agents.map(a=>`<div class="agent-mini ${a.id===selectedAgent.id?'active':''}" onclick="selectAgent('${a.id}')"><div class="avatar" style="--c:${a.color}"></div><span>${a.name}<small>${a.role} · ${projectName(a.project)}</small></span><div class="status-pill ${statusMap[a.status]}">${statusText(a.status)}</div></div>`).join('');
-}
-
-function projectName(id){const p=projects.find(x=>x.id===id);return p?p.name:''}
-
-function positionForAgent(agent){
-  if(agent.status==='running'){
-    if(agent.role.includes('Research')) return zonePositions.research;
-    if(agent.role.includes('Product')) return zonePositions.build;
-    if(agent.role.includes('Design')) return zonePositions.design;
-    if(agent.role.includes('Growth')) return zonePositions.outreach;
-    return zonePositions.ops;
-  }
-  if(agent.status==='review') return zonePositions.review;
-  if(agent.status==='blocked') return zonePositions.review;
-  if(agent.status==='done') return zonePositions.ops;
-  return zonePositions.idle;
-}
-
-function renderRunners(){
-  document.querySelectorAll('.runner').forEach(x=>x.remove());
-  agents.forEach(a=>{
-    const [x,y]=positionForAgent(a);
-    const r=document.createElement('div');
-    r.className='runner'+(a.id===selectedAgent.id?' selected':'')+(a.status==='running'?' moving':'')+(a.status==='blocked'?' blocked':'')+(a.status==='review'?' review':'');
-    r.id='runner-'+a.id;
-    r.style.left=x+'px';
-    r.style.top=y+'px';
-    r.style.setProperty('--shirt',a.color);
-    const bubbleText=a.status==='blocked'?'Blocked':a.status==='review'?'Needs review':a.status==='done'?'Completed':a.status==='running'?'Working':'Idle';
-    r.innerHTML=`<div class="bubble">${bubbleText}</div><div class="head"></div><div class="body"></div><div class="legs"></div>`;
-    r.onclick=()=>selectAgent(a.id);
-    document.getElementById('office').appendChild(r);
-  });
-}
-
-function renderInspector(){
-  const a=selectedAgent;
-  const needsAction = a.status==='blocked' ? 'This agent is blocked and needs a founder decision.' : a.status==='review' ? 'This agent has finished a task and is waiting for approval.' : a.status==='running' ? 'This agent is actively working right now.' : a.status==='done' ? 'This agent finished its current task.' : 'This agent is idle.';
-  document.getElementById('inspector').innerHTML=`
-    <div class="card">
-      <h3 class="pixel">SELECTED AGENT</h3>
-      <div class="inspect-head"><div class="avatar" style="--c:${a.color}"></div><div><div class="inspect-name">${a.name}</div><div class="inspect-role">${a.role}</div></div></div>
-      <div class="kv">
-        <div>PROJECT</div><div>${projectName(a.project)}</div>
-        <div>STATUS</div><div>${statusText(a.status)}</div>
-        <div>TASK</div><div>${a.task}</div>
-        <div>OUTPUT</div><div>${a.output}</div>
-        <div>PROGRESS</div><div>${a.progress}%</div>
-      </div>
-      <div class="progress"><i style="width:${a.progress}%"></i></div>
-      <div class="control-grid">
-        <button class="btn btn-yellow" onclick="togglePause()">${a.status==='idle'?'▶ RESUME':'Ⅱ PAUSE'}</button>
-        <button class="btn btn-blue" onclick="moveToReview()">↗ SEND TO REVIEW</button>
-        <button class="btn btn-green" onclick="approveAgent()">✓ APPROVE</button>
-        <button class="btn btn-red" onclick="markBlocked()">! BLOCK</button>
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="pixel">WHY THIS AGENT MATTERS</h3>
-      <p>${needsAction}</p>
-      <textarea class="task-editor" id="taskEditor">${a.task}</textarea>
-      <button class="btn btn-green" style="width:100%;margin-top:8px" onclick="updateTask()">UPDATE TASK</button>
-    </div>
-    <div class="card">
-      <h3 class="pixel">RECENT UPDATES</h3>
-      <div class="update-list">${a.updates.map(u=>`<div class="update-item">${u}</div>`).join('')}</div>
-      <div class="queue-item"><b>NEXT EXPECTED STEP</b><span>${a.status==='review'?'Founder decision and send':'Continue execution and report back'}</span></div>
-    </div>`;
-}
-
-function renderAttention(){
-  const items = agents.filter(a=>a.status==='review' || a.status==='blocked');
-  document.getElementById('reviewList').innerHTML = items.map(a=>`<div class="review-card"><b>${a.name.toUpperCase()} · ${statusText(a.status).toUpperCase()}</b><div>${a.output}</div><div class="review-actions"><button class="btn btn-green" onclick="resolveAttention('${a.id}','approve')">APPROVE</button><button class="btn btn-red" onclick="resolveAttention('${a.id}','unblock')">UNBLOCK</button></div></div>`).join('');
-  document.getElementById('reviewCount').textContent=`${items.length} ITEM${items.length===1?'':'S'}`;
-}
-
-function updateStats(){
-  const running=agents.filter(a=>a.status==='running').length;
-  const attention=agents.filter(a=>a.status==='review' || a.status==='blocked').length;
-  document.getElementById('statAgents').textContent=agents.length;
-  document.getElementById('statRunning').textContent=running;
-  document.getElementById('statAttention').textContent=attention;
-  document.getElementById('statProjects').textContent=projects.length;
-}
-
-window.selectProject=id=>{
-  activeProject=projects.find(p=>p.id===id);
-  document.getElementById('activeProjectLabel').textContent=activeProject.name;
-  document.getElementById('activeProjectMeta').textContent=activeProject.meta;
-  renderProjects();
-  log('SYSTEM',`Switched to project: ${activeProject.name}.`);
-  toast(activeProject.name+' loaded');
-}
-
-window.selectAgent=id=>{
-  selectedAgent=agents.find(a=>a.id===id);
-  renderAgentList(); renderRunners(); renderInspector();
-  log('INSPECTOR',`${selectedAgent.name} selected.`);
-}
-
-window.togglePause=()=>{
-  if(selectedAgent.status==='idle'){selectedAgent.status='running'; selectedAgent.progress=Math.max(selectedAgent.progress,15); log('FOUNDER',`Resumed ${selectedAgent.name}.`)}
-  else {selectedAgent.status='idle'; log('FOUNDER',`Paused ${selectedAgent.name}.`,'warn')}
-  renderAll(); toast('Agent status updated');
-}
-window.moveToReview=()=>{selectedAgent.status='review'; selectedAgent.progress=Math.max(selectedAgent.progress,90); selectedAgent.updates.unshift('Founder requested a manual review check.'); log('FOUNDER',`Sent ${selectedAgent.name} to review.`); renderAll(); toast('Sent to review')}
-window.approveAgent=()=>{selectedAgent.status='done'; selectedAgent.progress=100; selectedAgent.updates.unshift('Founder approved latest output.'); log('FOUNDER',`Approved ${selectedAgent.name}'s work.`); renderAll(); toast('Approved')}
-window.markBlocked=()=>{selectedAgent.status='blocked'; selectedAgent.updates.unshift('Blocked by missing input or decision.'); log('SYSTEM',`${selectedAgent.name} is blocked and needs attention.`,'warn'); renderAll(); toast('Marked blocked')}
-window.updateTask=()=>{selectedAgent.task=document.getElementById('taskEditor').value; selectedAgent.updates.unshift('Task updated by founder.'); log('FOUNDER',`Updated ${selectedAgent.name}'s task.`); renderAll(); toast('Task updated')}
-window.resolveAttention=(id,action)=>{
-  const a=agents.find(x=>x.id===id); if(!a) return;
-  if(action==='approve'){a.status='done'; a.progress=100; a.updates.unshift('Founder approved output from attention queue.'); log('FOUNDER',`Approved ${a.name} from Founder Attention.`)}
-  else {a.status='running'; a.progress=Math.max(a.progress,50); a.updates.unshift('Founder unblocked agent and resumed work.'); log('FOUNDER',`Unblocked ${a.name} from Founder Attention.`)}
-  if(selectedAgent.id===a.id) selectedAgent=a;
-  renderAll(); toast('Attention item handled');
-}
-window.setTheme=(theme,btn)=>{currentTheme=theme; const office=document.getElementById('office'); office.className='office theme-'+theme; document.querySelectorAll('.theme-chip').forEach(x=>x.classList.remove('active')); if(btn) btn.classList.add('active'); const labels={hawker:'Hawker Centre Skin',trading:'Trading Floor Skin',gardens:'Gardens by the Bay Skin'}; document.getElementById('themeLabel').textContent=labels[theme]; log('SYSTEM',`Scene changed to ${labels[theme]}.`); toast(labels[theme])}
-
-function renderAll(){renderProjects(); renderAgentList(); renderRunners(); renderInspector(); renderAttention(); updateStats();}
-
-function showTour(){document.getElementById('tourModal').classList.add('show')}
-function closeTour(){document.getElementById('tourModal').classList.remove('show')}
-window.showTour=showTour; window.closeTour=closeTour;
-
-const simulationSteps=[
-  ()=>{const a=agents.find(x=>x.id==='researcher'); a.progress=78; a.updates.unshift('Found 3 repeated pains: onboarding friction, pricing confusion, and slow support.'); log('Researcher','Found top 3 customer pain themes.')},
-  ()=>{const a=agents.find(x=>x.id==='builder'); a.progress=66; a.updates.unshift('Connected wireframe sections into a first clickable flow.'); log('Builder','Advanced homepage wireframe to first draft.')},
-  ()=>{const a=agents.find(x=>x.id==='outreacher'); a.status='review'; a.progress=95; a.updates.unshift('Prepared final sequence and moved it to founder review.'); log('Outreacher','Finished outreach sequence and is waiting for approval.')},
-  ()=>{const a=agents.find(x=>x.id==='designer'); a.status='running'; a.progress=49; a.updates.unshift('Founder selected a visual direction. Work resumed.'); log('Designer','Unblocked and resumed design work.')},
-  ()=>{const a=agents.find(x=>x.id==='operator'); a.status='running'; a.progress=70; a.updates.unshift('Started syncing approved outputs to CRM and task history.'); log('Operator','Began syncing approved outputs and logs.')}
-];
-
-function runSimulation(){
-  if(simTimer) clearInterval(simTimer);
-  simIndex=0;
-  toast('Live demo started');
-  log('SYSTEM','Running live demo simulation. Watch agents update and move.');
-  simulationSteps[simIndex++](); renderAll();
-  simTimer=setInterval(()=>{
-    if(simIndex>=simulationSteps.length){clearInterval(simTimer); simTimer=null; log('SYSTEM','Live demo simulation complete.'); toast('Simulation complete'); return;}
-    simulationSteps[simIndex++](); renderAll();
-  },1800);
-}
-window.runSimulation=runSimulation;
-
-renderAll();
-log('SYSTEM','TowkAI OS booted. This MVP shows what all your AI agents are doing in one place.');
-log('SYSTEM','Tip: open the Quick Tour or run the live demo.');
-setTimeout(showTour, 500);
+function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+function log(agent,msg,type=''){logsEl.innerHTML+=`<div><span class="log-time">[${now()}]</span> <span class="log-agent">${agent}</span> <span class="${type==='warn'?'log-warn':''}">${msg}</span></div>`;logsEl.scrollTop=logsEl.scrollHeight}
+function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1600)}
+function achievement(msg){const e=document.getElementById('achievement');e.textContent='ACHIEVEMENT · '+msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
+function projectName(id){return projects.find(p=>p.id===id)?.name||''}
+function statusText(s){return({running:'Running',blocked:'Blocked',review:'Needs Review',idle:'Idle',done:'Done'})[s]||s}
+function getAgentZone(a){if(a.status==='review'||a.status==='blocked')return'review';if(a.status==='done')return'ops';if(a.status==='idle')return'idle';return a.zone||'ops'}
+function updateStats(){const running=agents.filter(a=>a.status==='running').length;const attention=agents.filter(a=>['review','blocked'].includes(a.status)).length;document.getElementById('statAgents').textContent=agents.length;document.getElementById('statRunning').textContent=running;document.getElementById('statAttention').textContent=attention;document.getElementById('statXp').textContent=xp;document.getElementById('reviewCount').textContent=`${attention} ITEM${attention===1?'':'S'}`;document.getElementById('alertPill').textContent=`${attention} need attention`;document.getElementById('nextAction').textContent=attention?`Resolve ${agents.filter(a=>['review','blocked'].includes(a.status)).map(a=>a.name).slice(0,2).join(' or ')}.`:'No urgent items. Review live progress or create another task.';const cap=level*100;document.getElementById('xpFill').style.width=Math.min(100,(xp/cap)*100)+'%';document.getElementById('levelText').textContent=`${xp} / ${cap} XP · Resolve alerts and approve outputs to level up.`}
+function renderProjects(){document.getElementById('projectList').innerHTML=projects.map(p=>`<button class="project ${p.id===activeProject.id?'active':''}" onclick="selectProject('${p.id}')"><div class="project-name">${p.name}</div><div class="project-meta">${p.meta}</div><div class="project-progress"><i style="width:${p.progress}%"></i></div></button>`).join('')}
+function renderAgents(){document.getElementById('agentMiniList').innerHTML=agents.map(a=>`<div class="agent-mini ${a.id===selectedAgent.id?'active':''}" onclick="selectAgent('${a.id}')"><div class="avatar" style="--c:${a.color}"></div><span>${a.name}<small>${a.role} · ${projectName(a.project)}</small></span><div class="status-pill ${statusClass[a.status]}">${statusText(a.status)}</div></div>`).join('')}
+function renderQuests(){document.getElementById('questList').innerHTML=quests.map(q=>`<div class="quest ${q.done?'done':''}"><span class="quest-reward">+${q.reward} XP</span><b>${q.done?'COMPLETE':'QUEST'}</b>${q.text}</div>`).join('')}
+function positionRunners(animate=false){agents.forEach(a=>{const r=document.getElementById('runner-'+a.id);if(!r)return;const [x,y]=zonePositions[getAgentZone(a)];if(animate)r.classList.add('pulse');r.style.left=(x+(Math.random()*32-16))+'px';r.style.top=(y+(Math.random()*24-12))+'px';r.className='runner '+(a.id===selectedAgent.id?'selected ':'')+(a.status==='running'?'moving ':'')+(a.status==='blocked'?'blocked ':'')+(a.status==='review'?'review ':'');if(animate)setTimeout(()=>r.classList.remove('pulse'),1400)})}
+function renderRunners(){document.querySelectorAll('.runner').forEach(x=>x.remove());agents.forEach(a=>{const [x,y]=zonePositions[getAgentZone(a)];const r=document.createElement('div');r.id='runner-'+a.id;r.className='runner '+(a.id===selectedAgent.id?'selected ':'')+(a.status==='running'?'moving ':'')+(a.status==='blocked'?'blocked ':'')+(a.status==='review'?'review ':'');r.style.left=x+'px';r.style.top=y+'px';r.style.setProperty('--shirt',a.color);const bubble=a.status==='blocked'?'Blocked · needs you':a.status==='review'?'Output ready':a.status==='running'?`${a.progress}% · working`:a.status==='done'?'Task complete':'Idle';r.innerHTML=`<div class="bubble">${bubble}</div><div class="head"></div><div class="body"></div><div class="legs"></div>`;r.onclick=()=>selectAgent(a.id);document.getElementById('office').appendChild(r)})}
+function renderInspector(){const a=selectedAgent;document.getElementById('inspector').innerHTML=`<div class="card"><h3 class="pixel">SELECTED AGENT</h3><div class="inspect-head"><div class="avatar" style="--c:${a.color}"></div><div><div class="inspect-name">${a.name}</div><div class="inspect-role">${a.role}</div></div></div><div class="kv"><div>PROJECT</div><div>${projectName(a.project)}</div><div>STATUS</div><div>${statusText(a.status)}</div><div>PRIORITY</div><div>${a.priority}</div><div>PROGRESS</div><div>${a.progress}%</div></div><div class="progress"><i style="width:${a.progress}%"></i></div><div class="control-grid"><button class="btn btn-yellow" onclick="togglePause()">${a.status==='idle'?'▶ RESUME':'Ⅱ PAUSE'}</button><button class="btn btn-blue" onclick="sendReview()">↗ REVIEW</button><button class="btn btn-green" onclick="approveAgent()">✓ APPROVE</button><button class="btn btn-red" onclick="blockAgent()">! BLOCK</button></div><div class="priority-row"><button class="btn btn-blue" onclick="setPriority('Low')">LOW</button><button class="btn btn-yellow" onclick="setPriority('Medium')">MED</button><button class="btn btn-red" onclick="setPriority('High')">HIGH</button></div></div><div class="card"><h3 class="pixel">CURRENT TASK</h3><textarea class="task-editor" id="taskEditor">${a.task}</textarea><button class="btn btn-green" style="width:100%;margin-top:8px" onclick="updateTask()">UPDATE & RESUME</button></div><div class="card"><h3 class="pixel">LATEST OUTPUT</h3><div class="output-box">${a.output}</div></div><div class="card"><h3 class="pixel">RECENT UPDATES</h3><div class="update-list">${a.updates.slice(0,4).map(u=>`<div class="update-item">${u}</div>`).join('')}</div></div><div class="card"><h3 class="pixel">AGENT HEALTH</h3><div class="stat-grid"><div class="mini-stat">VELOCITY<b>${Math.max(1,Math.round(a.progress/17))}/h</b></div><div class="mini-stat">CONFIDENCE<b>${Math.min(99,65+Math.round(a.progress/4))}%</b></div><div class="mini-stat">TOKENS<b>${(2.1+a.progress/50).toFixed(1)}K</b></div><div class="mini-stat">ETA<b>${Math.max(2,Math.round((100-a.progress)/6))}m</b></div></div></div>`}
+function renderAttention(){const items=agents.filter(a=>['review','blocked'].includes(a.status));document.getElementById('reviewList').innerHTML=items.map(a=>`<div class="review-card"><b>${a.name.toUpperCase()} · ${statusText(a.status).toUpperCase()}</b><div>${a.status==='blocked'?a.updates[0]:a.output}</div><div class="review-actions"><button class="btn btn-green" onclick="resolveAttention('${a.id}','approve')">APPROVE</button><button class="btn btn-blue" onclick="resolveAttention('${a.id}','resume')">UNBLOCK</button><button class="btn btn-red" onclick="selectAgent('${a.id}')">INSPECT</button></div></div>`).join('')||'<div class="review-card"><b>ALL CLEAR</b><div>No blocked or review-ready agents.</div></div>'}
+function renderAll(){renderProjects();renderAgents();renderQuests();renderRunners();renderInspector();renderAttention();updateStats()}
+function addXp(n,reason){xp+=n;toast(`+${n} XP · ${reason}`);if(xp>=level*100){level++;achievement(`LEVEL ${level} · OPC OPERATOR`)}updateStats()}
+function completeQuest(id){const q=quests.find(x=>x.id===id);if(q&&!q.done){q.done=true;addXp(q.reward,q.text);renderQuests()}}
+function sparksAt(agentId,label='+XP'){const r=document.getElementById('runner-'+agentId);if(!r)return;const office=document.getElementById('office');const left=parseFloat(r.style.left)+12,top=parseFloat(r.style.top)+4;for(let i=0;i<8;i++){const s=document.createElement('div');s.className='spark';s.style.left=left+'px';s.style.top=top+'px';s.style.setProperty('--dx',(Math.random()*80-40)+'px');s.style.setProperty('--dy',(Math.random()*-70-10)+'px');office.appendChild(s);setTimeout(()=>s.remove(),1100)}const c=document.createElement('div');c.className='coin';c.style.left=(left+10)+'px';c.style.top=top+'px';c.textContent=label;office.appendChild(c);setTimeout(()=>c.remove(),1300)}
+window.selectProject=id=>{activeProject=projects.find(p=>p.id===id);document.getElementById('activeProjectLabel').textContent=activeProject.name;document.getElementById('activeProjectMeta').textContent=activeProject.meta;renderProjects();log('SYSTEM',`Project switched to ${activeProject.name}.`);toast(activeProject.name+' loaded')}
+window.selectAgent=id=>{selectedAgent=agents.find(a=>a.id===id);renderAgents();renderRunners();renderInspector();log('INSPECTOR',`${selectedAgent.name} selected.`)}
+window.togglePause=()=>{selectedAgent.status=selectedAgent.status==='idle'?'running':'idle';selectedAgent.updates.unshift(selectedAgent.status==='idle'?'Paused by founder.':'Resumed by founder.');log('FOUNDER',`${selectedAgent.status==='idle'?'Paused':'Resumed'} ${selectedAgent.name}.`);renderAll()}
+window.sendReview=()=>{selectedAgent.status='review';selectedAgent.progress=Math.max(90,selectedAgent.progress);selectedAgent.updates.unshift('Moved to founder review.');log('FOUNDER',`Sent ${selectedAgent.name} to review.`);renderAll();sparksAt(selectedAgent.id,'REVIEW')}
+window.approveAgent=()=>{selectedAgent.status='done';selectedAgent.progress=100;selectedAgent.updates.unshift('Output approved by founder.');log('FOUNDER',`Approved ${selectedAgent.name}.`);sparksAt(selectedAgent.id,'+20 XP');completeQuest('q1');addXp(20,'Approved output');renderAll()}
+window.blockAgent=()=>{selectedAgent.status='blocked';selectedAgent.updates.unshift('Blocked by founder for missing input.');log('FOUNDER',`Blocked ${selectedAgent.name}.`,'warn');renderAll()}
+window.setPriority=p=>{selectedAgent.priority=p;selectedAgent.updates.unshift(`Priority changed to ${p}.`);log('FOUNDER',`${selectedAgent.name} priority changed to ${p}.`);renderInspector();toast('Priority updated')}
+window.updateTask=()=>{selectedAgent.task=document.getElementById('taskEditor').value;selectedAgent.status='running';selectedAgent.updates.unshift('Task edited and resumed by founder.');log('FOUNDER',`Updated ${selectedAgent.name}'s task.`);renderAll()}
+window.resolveAttention=(id,action)=>{const a=agents.find(x=>x.id===id);if(action==='approve'){a.status='done';a.progress=100;a.updates.unshift('Approved from Founder Attention.');completeQuest('q1');addXp(20,'Resolved review')}else{a.status='running';a.progress=Math.max(45,a.progress);a.updates.unshift('Unblocked and resumed by founder.');completeQuest('q2');addXp(20,'Unblocked agent')}selectedAgent=a;log('FOUNDER',`${action==='approve'?'Approved':'Unblocked'} ${a.name}.`);renderAll();sparksAt(a.id,'+20 XP')}
+window.setTheme=(t,btn)=>{theme=t;document.getElementById('office').className='office theme-'+t;document.querySelectorAll('.theme-chip').forEach(x=>x.classList.remove('active'));btn?.classList.add('active');document.getElementById('themeLabel').textContent=({hawker:'Hawker Skin',trading:'Trading Floor Skin',gardens:'Gardens Skin'})[t];toast('Scene updated');log('SYSTEM',`Scene changed to ${t}.`)}
+window.setSpeed=(s,btn)=>{speed=s;document.querySelectorAll('.speed-chip').forEach(x=>x.classList.remove('active'));btn?.classList.add('active');if(live){stopTick();startTick()}toast(`Simulation speed ${s}×`)}
+function randomUpdate(a){const messages={research:['Found a new recurring customer pain.','Summarised 6 more interview notes.','Compared 3 competitor positioning pages.'],build:['Completed another section of the prototype.','Validated onboarding flow logic.','Generated a new implementation draft.'],design:['Prepared another visual direction.','Refined the hero layout.','Exported a review-ready concept.'],outreach:['Personalised 4 more prospect messages.','Improved subject-line variants.','Prepared a new follow-up step.'],ops:['Synced project memory.','Updated task history.','Logged a new workflow handoff.']};const z=a.zone||'ops';return messages[z][Math.floor(Math.random()*messages[z].length)]}
+function liveTick(){const running=agents.filter(a=>a.status==='running');if(!running.length)return;const a=running[Math.floor(Math.random()*running.length)];const inc=Math.max(1,Math.round((Math.random()*5+2)*speed));a.progress=Math.min(100,a.progress+inc);const msg=randomUpdate(a);a.updates.unshift(msg);log(a.name,msg);if(a.progress>=100){a.status='review';a.output=`Completed: ${a.task}`;a.updates.unshift('Task completed and submitted for founder review.');log(a.name,'Task complete · waiting for founder review.');achievement(`${a.name.toUpperCase()} SUBMITTED OUTPUT`)}else if(Math.random()<0.08*speed){a.status='blocked';a.updates.unshift('Encountered a missing dependency and needs founder input.');log(a.name,'Blocked by a missing dependency.','warn')}positionRunners(true);renderAgents();renderInspector();renderAttention();updateStats();if(Date.now()-liveStartedAt>10000)completeQuest('q3')}
+function startTick(){tickHandle=setInterval(liveTick,Math.max(650,2300/speed))}
+function stopTick(){if(tickHandle)clearInterval(tickHandle);tickHandle=null}
+function startLiveMode(){if(live)return;live=true;liveStartedAt=Date.now();document.getElementById('liveBtn').textContent='Ⅱ PAUSE LIVE';document.getElementById('liveIndicator').textContent='LIVE';document.getElementById('liveIndicator').style.color='var(--green)';startTick();log('SYSTEM','Live agent simulation started.');toast('Live mode started')}
+function stopLiveMode(){live=false;stopTick();document.getElementById('liveBtn').textContent='▶ LIVE MODE';document.getElementById('liveIndicator').textContent='PAUSED';document.getElementById('liveIndicator').style.color='';log('SYSTEM','Live agent simulation paused.');toast('Live mode paused')}
+function toggleLiveMode(){live?stopLiveMode():startLiveMode()}
+window.startLiveMode=startLiveMode;window.toggleLiveMode=toggleLiveMode;
+function spawnTask(){const idle=agents.find(a=>a.status==='idle'||a.status==='done')||agents[Math.floor(Math.random()*agents.length)];idle.status='running';idle.progress=8;idle.task=['Research 10 competitors and summarise whitespace.','Build a first-pass onboarding flow.','Create a launch visual direction.','Draft 15 personalised prospect openers.','Sync latest outputs into project memory.'][Math.floor(Math.random()*5)];idle.updates.unshift('New task assigned by founder.');selectedAgent=idle;log('FOUNDER',`Assigned a new task to ${idle.name}.`);renderAll();sparksAt(idle.id,'NEW TASK');toast('New task assigned')}
+window.spawnTask=spawnTask;
+function showTour(){document.getElementById('tourModal').classList.add('show')}function closeTour(){document.getElementById('tourModal').classList.remove('show')}window.showTour=showTour;window.closeTour=closeTour;
+document.addEventListener('keydown',e=>{if(e.target.matches('textarea,input'))return;if(e.code==='Space'){e.preventDefault();toggleLiveMode()}if(e.key==='1')setTheme('hawker',document.querySelectorAll('.theme-chip')[0]);if(e.key==='2')setTheme('trading',document.querySelectorAll('.theme-chip')[1]);if(e.key==='3')setTheme('gardens',document.querySelectorAll('.theme-chip')[2]);if(e.key.toLowerCase()==='a')approveAgent()});
+renderAll();log('SYSTEM','TowkAI OS booted. Every pixel worker represents one AI agent.');log('SYSTEM','Start Live Mode to watch autonomous progress, blockers and review requests appear.');setTimeout(showTour,400);
 </script>
 </body>
 </html>
